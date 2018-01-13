@@ -34,6 +34,7 @@ const queryObject = async function (...args) {
     try {
         const conn = await getConnection();
         args[args.length - 1] = (err, results) => {
+            console.log(results);
             conn.release();
             const error = err ? (err.message || err) : undefined;
             results = (results && results.length > 0) ? results[0] : undefined;
@@ -61,7 +62,7 @@ const queryList = async function (...args) {
         callback(err ? (err.message || err) : undefined);
     }
 }
-exports.queryList = queryList;
+exports.queryList = exports.execute = queryList;
 
 /*查询列表分页语句 sql, params, callback */
 const queryListForPagination = async function (sql, params, callback) {
@@ -90,14 +91,12 @@ exports.queryListForPagination = queryListForPagination;
 
 /*mysql事物处理 [{sql:'',paras:'',field:''},...], callback */
 const executeTransaction = async function (sqlTasks, callback) {
-
     try {
         let conn = await getConnection();
         await new Promise((resolve, reject) => { conn.beginTransaction((err) => { err ? reject(err) : resolve();}) })
         const queryFunc = function (sqlTask) {
             return new Promise(function (resolve, reject) {
                 conn.query(sqlTask.sql, sqlTask.paras, (err, result) => {
-                    console.log(result);
                     err ? reject(err) : resolve(result);
                 });
             })
@@ -105,12 +104,11 @@ const executeTransaction = async function (sqlTasks, callback) {
         const taskResult = {};
         for (const [key, sqlTask] of sqlTasks.entries()) {
             let result = await queryFunc(sqlTask);
-            result = (result && result.length > 0) ? result[0] : undefined;
+            // result = (result && result.length > 0) ? result[0] : undefined;
             taskResult[sqlTask.field ? sqlTask.field : key] = result;
         }
         await new Promise((resolve, reject) => { conn.commit((err) => { err ? reject(err) : resolve();}) })
         conn.release();
-        console.log(taskResult);
         callback(undefined, taskResult);
     } catch (err) {
         if (conn) {
@@ -125,43 +123,3 @@ const executeTransaction = async function (sqlTasks, callback) {
     }
 }
 exports.executeTransaction = executeTransaction;
-
-
-// function executeTransaction(sqlTasks, callback) {
-//     let connection;
-//     co(function*() {
-//         connection = yield cb1 => mysqlPool.getConnection(cb1);
-//
-//         yield cb2 => connection.beginTransaction(cb2);
-//
-//         connection.config.queryFormat = queryFormat;
-//
-//         const queryFunc = function (sqlTask, cb) {
-//             connection.query(sqlTask.sql, sqlTask.paras, cb);
-//         };
-//
-//         const taskResult = {};
-//         for (const [key, sqlTask] of sqlTasks.entries()) {
-//             let result = yield cb3 => queryFunc(sqlTask, cb3);
-//             result = (result && result.length > 0) ? result[0] : undefined;
-//             taskResult[sqlTask.field ? sqlTask.field : key] = result;
-//         }
-//
-//         yield cb4 => connection.commit(cb4);
-//         mysqlPool.releaseConnection(connection);
-//         callback(undefined, taskResult);
-//     }).catch((err) => {
-//         if (connection) {
-//             try {
-//                 connection.rollback();
-//             } catch (ex) {
-//                 console.error(ex);
-//             } finally {
-//                 mysqlPool.releaseConnection(connection);
-//             }
-//         }
-//         callback(err ? (err.message || err) : undefined);
-//     });
-// }
-//
-// exports.executeTransaction = executeTransaction;
