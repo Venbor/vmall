@@ -1,3 +1,4 @@
+// 定义返回数据类
 class RetJson {
     constructor(errcode = 0, errmsg = '', retobj = '') {
         this.errcode = errcode;
@@ -5,5 +6,4 @@ class RetJson {
         this.retobj = retobj;
     }
 }
-
 module.exports = RetJson;

@@ -1,4 +1,3 @@
-
 const validator = require('validator');
 
 // 公共验证

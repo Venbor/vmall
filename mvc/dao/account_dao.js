@@ -1,4 +1,4 @@
-const mysqlDB = require('../common/mysql_pool');
+const mysqlDB = require('../../common/mysql_pool');
 
 
 // function getUserWechatSqlData(queryParams, callback) {

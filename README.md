@@ -28,7 +28,7 @@ npm install -g eslint-plugin-react
 
 生产环境必装
 npm install express body-parser express-session ejs-mate compression --save
-
+npm install validator utility redis --save
 
 
 npm install -g pm2

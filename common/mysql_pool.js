@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const config = require('../config/config_site');
+const config = require('../config/config_web');
 
 const mysqlPool = mysql.createPool(config.mysqlConfig);
 
@@ -18,12 +18,9 @@ function queryFormat(query, values) {
 function getConnection() {
     return new Promise(function (resolve, reject) {
         mysqlPool.getConnection((err, conn) => {
-            if (err) {
-                reject(err);
-            } else {
-                conn.config.queryFormat = queryFormat;
-                resolve(conn);
-            }
+            if (err) return reject(err);
+            conn.config.queryFormat = queryFormat;
+            resolve(conn);
         })
     });
 }
@@ -104,7 +101,7 @@ const executeTransaction = async function (sqlTasks, callback) {
         const taskResult = {};
         for (const [key, sqlTask] of sqlTasks.entries()) {
             let result = await queryFunc(sqlTask);
-            // result = (result && result.length > 0) ? result[0] : undefined;
+            result = (result && result.length > 0) ? result[0] : undefined;
             taskResult[sqlTask.field ? sqlTask.field : key] = result;
         }
         await new Promise((resolve, reject) => { conn.commit((err) => { err ? reject(err) : resolve();}) })

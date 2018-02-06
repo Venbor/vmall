@@ -26,6 +26,9 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "log4js": "^2.4.1",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "redis": "^2.8.0",
+    "utility": "^1.13.1",
+    "validator": "^9.2.0"
   }
 }

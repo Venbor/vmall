@@ -2,6 +2,20 @@ module.exports = {
     sitePort: 6050,  // 端口
     sessionName: 'session_key',  // session键值
     sessionSecret: 'vamll',  // session签名
+    // mysql配置
+    mysqlConfig: {
+        host: 'localhost',
+        user: 'root',
+        password: '123456',
+        database: 'vmall_db',
+        port: 3306,
+    },
+    // redis配置
+    redisConfig: {
+        host: '127.0.0.1',
+        port: 6379,
+        pass: '',
+    },
     // 日志配置
     loggerConfig: {
         categories: {
@@ -14,27 +28,15 @@ module.exports = {
             appdebug: {
                 category: 'vmall', // 日志分类
                 type: 'File', // 输出日志方式
-                filename: 'logs/vmall-debug.log',
+                filename: 'assets/logs/vmall-debug.log',
             },
         }
-    },
-    // mysql配置
-    mysqlConfig: {
-        host: 'localhost',
-        user: 'root',
-        password: '123456',
-        database: 'vmall_db',
-        port: 3306,
     },
     // redisPrename: {
     //     propertymap: 'SYSPROPERTYMAP',
     //     oauthToken: 'collectToken',
     // },
-    // redisConfig: {
-    //     host: '127.0.0.1',
-    //     port: 6379,
-    //     pass: '',
-    // },
+
     // socketConfig: {
     //     host: 'http://127.0.0.1:6086',
     // },
