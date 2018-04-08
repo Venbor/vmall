@@ -5,7 +5,10 @@ const session = require('express-session');
 const compression = require('compression')
 const log4js = require('log4js');
 const config = require('./config/config_web');
+const configRoute = require('./config/config_route.js');
 const app = express();
+const router = express.Router();
+const mountRoute = require('./routes_mount.js');
 
 // 设置模板引擎为html
 app.set('views', path.resolve(__dirname, ''));
@@ -40,9 +43,11 @@ global.logger.debug('test','debug');
 app.use('/assets', express.static(path.resolve(__dirname, 'assets')));
 
 // 对外api接口路由
-app.use('/', require('./routes_api'));
+app.use('/', mountRoute(router, configRoute));
 
 // 启动 Web 服务
 app.listen(config.sitePort, () => {
     console.warn(`listening on port ${config.sitePort} in mode`);
 });
+
+
