@@ -22,6 +22,9 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
+    "connect-history-api-fallback": "^1.5.0",
+    "cookie-parser": "^1.4.3",
+    "csurf": "^1.9.0",
     "ejs-mate": "^2.3.0",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
@@ -30,6 +33,7 @@
     "mysql": "^2.15.0",
     "redis": "^2.8.0",
     "utility": "^1.13.1",
-    "validator": "^9.2.0"
+    "validator": "^9.2.0",
+    "wechat-oauth": "^1.2.1"
   }
 }

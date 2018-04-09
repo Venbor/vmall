@@ -3,6 +3,7 @@
 node_modules/
 /dist/
 /logs/
+/static/
 
 # Editor directories and files
 .idea

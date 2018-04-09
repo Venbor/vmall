@@ -16,10 +16,13 @@ const RetJson = require('../config/RetJson');
  * */
 const signIn = {
   url: '/sigin',
-  method: 'get',
+  method: 'post',
   middlewares: [],
   routeDesc: '登录',
   handle(req, res) {
+
+
+    
     res.send('success');
   },
   //     const userName = req.body.userName;
