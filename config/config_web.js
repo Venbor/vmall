@@ -26,20 +26,30 @@ module.exports = {
         appenders: ['appdebug'],
         level: 'debug', // 日志分级
       },
+      info: {
+        appenders: ['appinfo'],
+        level: 'info', // 日志分级
+      },
     },
+    // 日志出口配置
     appenders: {
       appdebug: {
-        category: 'vmall', // 日志分类
-        type: 'File', // 输出日志方式
-        filename: 'assets/logs/vmall-debug.log',
+        category: 'linwb', // 日志分类
+        type: 'file', // 输出日志方式
+        filename: 'assets/debug.log',
+      },
+      appinfo: {
+        category: 'linwb', // 日志分类
+        type: 'file', // 输出日志方式
+        filename: 'assets/info.log',
       },
     }
   },
   // 微信配置
   wechatConfig: {
     token: '',
-    appID: 'wx2421b1c4370ec43b',
-    appSecret: '1',
+    appID: 'wxedfcac81e30bb19f',
+    appSecret: '195909e14a91bc9abbdce019d0d76d27',
     mchID: '10000100',
     partnerKey: 'w11211112222222212122134135674r5',
     spbillCreateIP: '127.0.0.1',

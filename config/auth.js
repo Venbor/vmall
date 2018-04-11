@@ -26,7 +26,13 @@ function userRequired(req, res, next) {
 }
 exports.userRequired = userRequired;
 
-// 验证微信登录
+// 验证微信登录 
+function userWechatLogin1(req, res, next) {
+  next();
+}
+
+exports.userWechatLogin = userWechatLogin;
+
 function userWechatLogin(req, res, next) {
   // 已经登录
   if (req.session && req.session.currentUser) {
@@ -36,10 +42,13 @@ function userWechatLogin(req, res, next) {
   }
   const code = req.query.code;
   const state = req.query.state;
+
+  console.log(code);
   // 未授权,跳转授权页面
   if (!code) {
     const redirectUrl = url.format({ protocol: req.protocol, host: req.headers.host }) + req.originalUrl; // 授权后需要跳转地址
     const oauthUrl = OAuthApi.getAuthorizeURL(redirectUrl, 'base5', 'snsapi_userinfo'); // snsapi_userinfo为弹出授权
+    console.log(redirectUrl)
     res.redirect(oauthUrl); // 跳转授权url页面
     return;
   }
@@ -60,6 +69,7 @@ function userWechatLogin(req, res, next) {
       nickname: oauthUser.nickname,
       headImgUrl: oauthUser.headimgurl,
     };
+    next();
     // 插入数据库
     // yield cb2 => accountBusiness.insertUserWechatLogic(queryParams, cb2);
     // 取出数据
@@ -69,14 +79,14 @@ function userWechatLogin(req, res, next) {
     //   return;
     // }
     // 写入session
-  //     const currentWechat = {
-  //   wechatID: wechatResult.wechatID,
-  //   openID: queryParams.openID,
-  //   nickname: queryParams.nickname,
-  //   headImgUrl: queryParams.headImgUrl,
-  //   systemName: queryParams.systemName,
-  // };
-  // res.locals.currentWechat = req.session.currentWechat = currentWechat;
+    //     const currentWechat = {
+    //   wechatID: wechatResult.wechatID,
+    //   openID: queryParams.openID,
+    //   nickname: queryParams.nickname,
+    //   headImgUrl: queryParams.headImgUrl,
+    //   systemName: queryParams.systemName,
+    // };
+    // res.locals.currentWechat = req.session.currentWechat = currentWechat;
   });
 }
 

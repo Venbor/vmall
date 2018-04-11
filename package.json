@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +16,6 @@
   "bugs": {
     "url": "https://github.com/Venbor/vmall/issues"
   },
-  "homepage": "https://github.com/Venbor/vmall#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
@@ -30,10 +27,29 @@
     "express-session": "^1.15.6",
     "glob": "^7.1.2",
     "log4js": "^2.4.1",
+    "moment": "^2.22.0",
     "mysql": "^2.15.0",
     "redis": "^2.8.0",
     "utility": "^1.13.1",
     "validator": "^9.2.0",
     "wechat-oauth": "^1.2.1"
-  }
+  },
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-replace": "^0.6.1",
+    "gulp-sequence": "^1.0.0",
+    "gulp-sftp": "^0.1.5",
+    "gulp-ssh": "^0.7.0",
+    "gulp-zip": "^4.1.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

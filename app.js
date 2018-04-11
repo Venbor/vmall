@@ -2,12 +2,11 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-
 const compression = require('compression');
 const history = require('connect-history-api-fallback');
 const log4js = require('log4js');
 const csrf = require('csurf');
-// const auth = require('./config/auth');
+const auth = require('./config/auth');
 const config = require('./config/config_web');
 const configRoute = require('./config/config_route.js');
 const mountRoute = require('./routes_mount.js');
@@ -61,6 +60,7 @@ app.use((req, res, next) => {
 // 设置csrfToken
 app.use((req, res, next) => {
   // csrf中间件会在req上挂载csrfToken方法获取csrfToken
+  // 挂载在res.locals上可以作用于模板
   res.locals.csrf = req.csrfToken ? req.csrfToken() : '';
   next();
 });
@@ -68,10 +68,13 @@ app.use((req, res, next) => {
 // 日志管理
 log4js.configure(config.loggerConfig);
 global.logger = log4js.getLogger();
-global.logger.debug('test', 'debug');
+global.loggerInfo = log4js.getLogger('info');
+// global.logger.debug('test', 'debug');
+// global.loggerInfo.info('test', 'info');
 
 // 静态化文件
 app.use('/assets', express.static(path.resolve(__dirname, 'assets')));
+// vue打包文件
 app.use('/static', express.static(path.resolve(__dirname, 'static')));
 
 // api接口路由
@@ -98,7 +101,7 @@ app.use((err, req, res, next) => {
   }
   global.logger.debug('code:500', err);
   res.status(500);
-  res.send('内部服务器错误');
+  res.send('服务器内部错误');
 });
 
 // 启动 Web 服务
