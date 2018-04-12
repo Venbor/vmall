@@ -22,12 +22,7 @@ module.exports = {
       method: 'GET',
       qs: data,
     }, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        cb(body);
-      } else {
-        global.logger.debug('requestGET', `errmsg：${error}`);
-        cb(undefined);
-      }
+      cb(error, body);
     });
   },
   // request POST请求封装
@@ -41,12 +36,7 @@ module.exports = {
       method: 'POST',
       body: data,
     }, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        cb(body);
-      } else {
-        global.logger.debug('requestPOST', `errmsg：${error}`);
-        cb(undefined);
-      }
+      cb(error, body);
     });
   },
 };

@@ -58,6 +58,7 @@ const queryList = async function (...args) {
     callback(err ? (err.message || err) : undefined);
   }
 };
+// 插入语句execute
 exports.queryList = exports.execute = queryList;
 
 /* 查询列表分页语句 sql, params, callback */
@@ -112,7 +113,7 @@ const executeTransaction = async function (sqlTasks, callback) {
         conn.rollback();
       } catch (error) {
         conn.release();
-        console.error(error);
+        global.logger.debug('mysql事物处理异常', `errmsg:${error ? (error.message || error) : undefined}`); // 记录错误日志
       }
     }
     callback(err ? (err.message || err) : undefined);

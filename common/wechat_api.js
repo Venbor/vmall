@@ -19,8 +19,8 @@ module.exports = {
       secret: wechatcfg.appSecret,
       code: code,
       grant_type: 'authorization_code',
-    }, (data) => {
-      cb(data);
+    }, (err, data) => {
+      cb(err, data);
     });
   },
   // 验证用户accessToken是否有效
@@ -29,8 +29,8 @@ module.exports = {
     common.requestGET(checkUrl, {
       openid: openid,
       access_token: accessToken,
-    }, (data) => {
-      cb(data);
+    }, (err, data) => {
+      cb(err, data);
     });
   },
   // 刷新用户accessToken
@@ -40,8 +40,8 @@ module.exports = {
       appid: wechatcfg.appID,
       refresh_token: refToken,
       grant_type: 'refresh_token',
-    }, (data) => {
-      cb(data);
+    }, (err, data) => {
+      cb(err, data);
     });
   },
   // 获取用户信息
@@ -51,8 +51,8 @@ module.exports = {
       openid: openid,
       access_token: accessToken,
       lang: 'zh_CN',
-    }, (data) => {
-      cb(data);
+    }, (err, data) => {
+      cb(err, data);
     });
   },
 };

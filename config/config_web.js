@@ -9,8 +9,8 @@ module.exports = {
   mysqlConfig: {
     host: 'localhost',
     user: 'root',
-    password: '123456',
-    database: 'vmall_db',
+    password: '',
+    database: 'linwb_db',
     port: 3306,
   },
   // redis配置

@@ -4,3 +4,4 @@ iconfont.js
 index.html
 build
 config
+common/mysql_pool.js
