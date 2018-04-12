@@ -30,6 +30,7 @@
     "moment": "^2.22.0",
     "mysql": "^2.15.0",
     "redis": "^2.8.0",
+    "request": "^2.85.0",
     "utility": "^1.13.1",
     "validator": "^9.2.0",
     "wechat-oauth": "^1.2.1"
@@ -41,7 +42,8 @@
     "gulp-sequence": "^1.0.0",
     "gulp-sftp": "^0.1.5",
     "gulp-ssh": "^0.7.0",
-    "gulp-zip": "^4.1.0"
+    "gulp-zip": "^4.1.0",
+    "qs": "^6.5.1"
   },
   "engines": {
     "node": ">= 4.0.0",

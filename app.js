@@ -6,7 +6,7 @@ const compression = require('compression');
 const history = require('connect-history-api-fallback');
 const log4js = require('log4js');
 const csrf = require('csurf');
-const auth = require('./config/auth');
+const auth = require('./common/auth');
 const config = require('./config/config_web');
 const configRoute = require('./config/config_route.js');
 const mountRoute = require('./routes_mount.js');
@@ -68,9 +68,8 @@ app.use((req, res, next) => {
 // 日志管理
 log4js.configure(config.loggerConfig);
 global.logger = log4js.getLogger();
-global.loggerInfo = log4js.getLogger('info');
-// global.logger.debug('test', 'debug');
-// global.loggerInfo.info('test', 'info');
+global.logger.debug('debug', 'DEBUG开启');
+
 
 // 静态化文件
 app.use('/assets', express.static(path.resolve(__dirname, 'assets')));
@@ -85,7 +84,7 @@ app.use(history({ rewrites: [{ from: /^\/\w*$/, to: '/' }] }));
 
 // 读取根目录index文件并渲染
 if (require('fs').existsSync('index.html')) {
-  app.get('/', (req, res) => { res.render('index'); });
+  app.get('/', auth.userWechatLogin, (req, res) => { res.render('index'); });
 }
 
 // 拦截跨域CSRF攻击

@@ -1,5 +1,6 @@
 const glob = require('glob');
-const auth = require('./config/auth.js'); // 授权中间间
+const auth = require('./common/auth.js'); // 授权中间间
+
 const filesList = glob.sync('./controllers/*.js'); // 获取文件列表
 
 function mountRoute(router, options) {

@@ -7,6 +7,7 @@ const GulpSSH = require('gulp-ssh');
 const gulpSequence = require('gulp-sequence');
 
 // 服务器配置
+// ssh root@103.213.250.157 -p 22
 const serverConfig = {
   host: '103.213.250.157',
   port: 22,
@@ -26,7 +27,8 @@ const gulpSSH = new GulpSSH({
 
 // 压缩文件
 gulp.task('zip', (cb) => {
-  gulp.src(['**', '!node_modules/**', '!node_modules/', '!assets/**', '!assets/'])
+  // gulp.src(['**', '!node_modules/**', '!node_modules/', '!assets/**', '!assets/'])
+  gulp.src(['**', '!node_modules/**', '!node_modules/'])
     .pipe(zip(`LINWB${moment().format('YYYY-MM-DD')}.zip`))
     .pipe(gulp.dest('dist'))
     .on('end', cb);

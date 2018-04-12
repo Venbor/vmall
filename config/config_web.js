@@ -26,10 +26,6 @@ module.exports = {
         appenders: ['appdebug'],
         level: 'debug', // 日志分级
       },
-      info: {
-        appenders: ['appinfo'],
-        level: 'info', // 日志分级
-      },
     },
     // 日志出口配置
     appenders: {
@@ -37,11 +33,6 @@ module.exports = {
         category: 'linwb', // 日志分类
         type: 'file', // 输出日志方式
         filename: 'assets/debug.log',
-      },
-      appinfo: {
-        category: 'linwb', // 日志分类
-        type: 'file', // 输出日志方式
-        filename: 'assets/info.log',
       },
     }
   },

@@ -1,26 +1,15 @@
 const mysqlDB = require('../../common/mysql_pool');
 
 
-// function getUserWechatSqlData(queryParams, callback) {
-//     const sql = `select customerName,customerID,customerFullName,saleman
-//     from cm_collection_customers`;
-//     mysqlDB.queryListForPagination(sql, queryParams, callback);
-// }
-function getUserWechatSqlData(queryParams, callback) {
-    // const sql = 'select customerName,customerID,customerFullName,saleman from cm_collection_customers where customerID=:customerID';
+function insertUserWechatSql(insertData, callback) {
+  const sql = `insert into cm_member_wechats(unionID,originalID,openID,nickname,headImgUrl,systemName,isAutoLogin,createTime)
+  select :unionID,:originalID,:openID,:nickname,:headImgUrl,:systemName,0,now()
+  on duplicate key update unionID=:unionID,nickname=:nickname,headImgUrl=:headImgUrl,systemName=:systemName`;
 
-    const sqlTasks = [];
-    const orderSql = `update cm_collection_customers set customerName=:customerName where customerID=:customerID`;
-    const orderStatusRecordSql = `delete from cm_collection_customers where customerID=110`;
-
-    sqlTasks.push({ sql: orderSql, paras: {customerName: '110事物并且删除110', customerID: 100} });
-    sqlTasks.push({ sql: orderStatusRecordSql, paras: {} });
-
-    mysqlDB.executeTransaction(sqlTasks,callback);
+  mysqlDB.execute(sql, insertData, callback);
 }
 
 
-
 module.exports = {
-    getUserWechatSqlData,
+  insertUserWechatSql,
 };

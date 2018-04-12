@@ -1,37 +1,28 @@
-Last login: Wed Apr 11 11:08:30 2018 from 219.134.182.186
+Last login: Thu Apr 12 11:48:35 2018 from 219.134.180.93
+cd /root
+sh linwb.sh
+ls
+exit
 [root@localhost ~]# cd /root
 [root@localhost ~]# sh linwb.sh
-Archive:  LINWBUI2018-04-11.zip
-  inflating: index.html              
-  inflating: static/shell.log        
-  inflating: static/css/app.9e2a1b9e09e5fafa23dbebdc2d27353d.css  
-  inflating: static/img/banner.c360e59.jpg  
-  inflating: static/js/0.50346d3475d46291ffeb.js  
-  inflating: static/js/1.b3e03da7c0bd97815f27.js  
-  inflating: static/js/2.fed92eda61fb4d144307.js  
-  inflating: static/js/3.97eca8faf155ddb6ecef.js  
-  inflating: static/js/4.b3b33c2fe9fb148691fd.js  
-  inflating: static/js/5.48293b0154b3b804b750.js  
-  inflating: static/js/6.68dce9777b73bec2c493.js  
-  inflating: static/js/7.09160033c9962a90d577.js  
-  inflating: static/js/8.0d31cda40e6d7067a0ff.js  
-  inflating: static/js/9.0d296a53dae376fa5de1.js  
-  inflating: static/js/app.16f6f711228e0854dcdb.js  
-  inflating: static/js/manifest.3bee52f08eabc1483caa.js  
-  inflating: static/js/vendor.2ac82b4ce93ea7531478.js  
-Archive:  LINWB2018-04-11.zip
+cp: cannot stat ‘LINWBUI2018-04-12.zip’: No such file or directory
+unzip:  cannot find or open LINWBUI2018-04-12.zip, LINWBUI2018-04-12.zip.zip or LINWBUI2018-04-12.zip.ZIP.
+Archive:  LINWB2018-04-12.zip
   inflating: README.md               
   inflating: app.js                  
   inflating: gulpfile.js             
   inflating: package.json            
   inflating: routes_mount.js         
+  inflating: assets/debug.log        
+  inflating: assets/shell.log        
+  inflating: common/auth.js          
   inflating: common/comm_func.js     
   inflating: common/mysql_pool.js    
   inflating: common/redis_client.js  
   inflating: common/validator_extend.js  
+  inflating: common/wechat_api.js    
   inflating: controllers/account.js  
   inflating: config/RetJson.js       
-  inflating: config/auth.js          
   inflating: config/config_route.js  
   inflating: config/config_web.js    
   inflating: config/i18n_cn.js       
@@ -40,11 +31,11 @@ Archive:  LINWB2018-04-11.zip
 [1m[34mUse --update-env to update environment variables[39m[22m
 [32m[PM2] [39mApplying action restartProcessId on app [all](ids: 0)
 [32m[PM2] [39m[linwb](0) ✓
-[90m┌───────┬──────┬────────┬────┬─────┬──────────┐[39m
-[90m│[39m[1m[36m Name  [39m[22m[90m│[39m[1m[36m mode [39m[22m[90m│[39m[1m[36m status [39m[22m[90m│[39m[1m[36m ↺  [39m[22m[90m│[39m[1m[36m cpu [39m[22m[90m│[39m[1m[36m memory   [39m[22m[90m│[39m
-[90m├───────┼──────┼────────┼────┼─────┼──────────┤[39m
-[90m│[39m[1m[36m [1m[36mlinwb[36m[1m [39m[22m[90m│[39m [7m[1mfork[22m[27m [90m│[39m [32m[1monline[22m[39m [90m│[39m 17 [90m│[39m 0%  [90m│[39m 7.0 MB   [90m│[39m
-[90m└───────┴──────┴────────┴────┴─────┴──────────┘[39m
+[90m┌───────┬──────┬────────┬─────┬─────┬──────────┐[39m
+[90m│[39m[1m[36m Name  [39m[22m[90m│[39m[1m[36m mode [39m[22m[90m│[39m[1m[36m status [39m[22m[90m│[39m[1m[36m ↺   [39m[22m[90m│[39m[1m[36m cpu [39m[22m[90m│[39m[1m[36m memory   [39m[22m[90m│[39m
+[90m├───────┼──────┼────────┼─────┼─────┼──────────┤[39m
+[90m│[39m[1m[36m [1m[36mlinwb[36m[1m [39m[22m[90m│[39m [7m[1mfork[22m[27m [90m│[39m [32m[1monline[22m[39m [90m│[39m 902 [90m│[39m 33% [90m│[39m 8.0 MB   [90m│[39m
+[90m└───────┴──────┴────────┴─────┴─────┴──────────┘[39m
 [37m[3m Use `pm2 show <id|name>` to get more details about an app[23m[39m
 publish finished
 [root@localhost ~]# ls
