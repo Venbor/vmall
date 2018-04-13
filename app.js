@@ -84,7 +84,8 @@ app.use(history({ rewrites: [{ from: /^\/\w*$/, to: '/' }] }));
 
 // 读取根目录index文件并渲染
 if (require('fs').existsSync('index.html')) {
-  app.get('/', auth.userWechatLogin, (req, res) => { res.render('index'); });
+  app.get('/', (req, res) => { res.render('index'); });
+  // app.get('/', auth.userWechatLogin, (req, res) => { res.render('index'); });
 }
 
 // 拦截跨域CSRF攻击

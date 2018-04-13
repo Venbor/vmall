@@ -27,8 +27,7 @@ const gulpSSH = new GulpSSH({
 
 // 压缩文件
 gulp.task('zip', (cb) => {
-  // gulp.src(['**', '!node_modules/**', '!node_modules/', '!assets/**', '!assets/'])
-  gulp.src(['**', '!node_modules/**', '!node_modules/'])
+  gulp.src(['**', '!node_modules/**', '!node_modules/', '!index.html', '!static/**', '!static/'])
     .pipe(zip(`LINWB${moment().format('YYYY-MM-DD')}.zip`))
     .pipe(gulp.dest('dist'))
     .on('end', cb);
