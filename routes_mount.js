@@ -1,9 +1,10 @@
 const glob = require('glob');
-const auth = require('./common/auth.js'); // 授权中间间
+const auth = require('./config/auth.js'); // 授权中间间
+const common = require('./common/comm_func.js'); // 公用方法
 
 const filesList = glob.sync('./controllers/*.js'); // 获取文件列表
 
-function mountRoute(router, options) {
+function mountRoute(router) {
   if (!Array.isArray(filesList)) {
     console.error(`glob读取路由文件失败,返回结果:${filesList}`);
     return router;
@@ -24,7 +25,7 @@ function mountRoute(router, options) {
     // 循环引入文件
     const controller = require(filePath);
     if (!Array.isArray(controller)) {
-      console.error(`控制器页面导出类型必须为数组，出错路径:${JSON.stringify(controller)}`);
+      console.error(`导出类型必须为数组，出错路径:${JSON.stringify(controller)}`);
       return router;
     }
     // 循环挂载文件内方法
@@ -35,8 +36,8 @@ function mountRoute(router, options) {
       model.method = (item.method || 'get').toLowerCase();
       model.middlewares = item.middlewares || [];
       model.routeDesc = item.routeDesc || '';
-      model.handle = item.handle || function () {};
-      router[model.method](model.url, compose(model.middlewares, model.url), model.handle);
+      model.handle = item.handle || function() {};
+      router[model.method](model.url, compose(model.middlewares, model.url), common.handlerError(model.handle));
     });
   });
   return router;

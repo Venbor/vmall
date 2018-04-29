@@ -1,18 +1,17 @@
-// const url = require('url');
-const RetJson = require('../config/RetJson');
-const wechatApi = require('./wechat_api.js');
+const FailJson = require('./ResJson').FailJson;
+const wechatApi = require('../common/wechat_api.js');
 const accountBusiness = require('../business/account_business');
-const common = require('./comm_func.js');
+const common = require('../common/comm_func.js');
 
 // 1.直接跳过
-exports.routeNext = function (req, res, next) {
+exports.routeNext = function(req, res, next) {
   next();
 };
 
 // 2.验证登录
-exports.userRequired = function (req, res, next) {
+exports.userRequired = function(req, res, next) {
   if (!req.session || !req.session.currentUser) {
-    res.status(403).send(new RetJson(0, '您还未登录系统，请先登录'));
+    res.status(403).send(new FailJson('您还未登录系统，请先登录'));
     return;
   }
   res.locals.currentUser = req.session.currentUser;
@@ -20,7 +19,7 @@ exports.userRequired = function (req, res, next) {
 };
 
 // 3.验证微信登录
-exports.userWechatLogin = async function (req, res, next) {
+exports.userWechatLogin = async function(req, res, next) {
   // 已经登录
   if (req.session && req.session.currentUser) {
     res.locals.currentUser = req.session.currentUser;
@@ -36,37 +35,35 @@ exports.userWechatLogin = async function (req, res, next) {
   }
   try {
     // 获取网页授权token
-    let tokenData = await common.promisify(wechatApi.getAccessToken)(code); // 封装Promise方法
+    let tokenData = await common.promisify(wechatApi.getAccessToken)(code);
     tokenData = JSON.parse(tokenData);
     if (!tokenData || tokenData.errcode || !tokenData.hasOwnProperty('openid')) {
-      res.send('获取网页授权token失败');
-      global.logger.debug('获取网页授权token失败', `errmsg: ${tokenData}`);
+      res.send(new FailJson('获取网页授权token失败'));
+      global.logger.debug('获取网页授权token失败', `errmsg: ${json.stringify(tokenData)}`);
       return;
     }
     // 获取用户信息
-    let userData = await common.promisify(wechatApi.getUserInfo)(tokenData.access_token, tokenData.openid); // 封装Promise方法
+    let userData = await common.promisify(wechatApi.getUserInfo)(tokenData.access_token, tokenData.openid);
     userData = JSON.parse(userData);
     if (!userData || userData.errcode || !userData.hasOwnProperty('openid')) {
-      res.send('获取用户信息失败');
-      global.logger.debug('获取用户信息失败', `errmsg: ${userData}`);
+      res.send(new FailJson('获取用户信息失败'));
+      global.logger.debug('获取用户信息失败', `errmsg: ${json.stringify(userData)}`);
       return;
     }
-    // 插入用户信息
+    // 插入/更新用户信息
     const queryParams = {
       unionID: userData.unionid,
       openID: userData.openid,
       nickname: userData.nickname,
       headImgUrl: userData.headimgurl,
     };
-    const insertUserWechatLogic = common.promisify(accountBusiness.insertUserWechatLogic); // 封装Promise方法
-    const insertResult = await insertUserWechatLogic(queryParams);
+    const insertResult = await common.promisify(accountBusiness.insertUserWechatLogic)(queryParams);
+    // 成功后登陆系统
     if (insertResult) {
       res.locals.currentUser = req.session.currentUser = queryParams;
       next();
     }
-    // 获取用户信息
   } catch (err) {
-    res.send('用户微信登录出错');
-    global.logger.debug('用户微信登录出错', err ? (err.message || err) : undefined);
+    next(err);
   }
 };

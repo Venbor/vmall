@@ -27,9 +27,9 @@ const gulpSSH = new GulpSSH({
 
 // 压缩文件
 gulp.task('zip', (cb) => {
-  gulp.src(['**', '!node_modules/**', '!node_modules/', '!index.html', '!static/**', '!static/'])
+  gulp.src(['**', '!node_modules/**', '!node_modules/', '!dist/**', '!dist/'])
     .pipe(zip(`LINWB${moment().format('YYYY-MM-DD')}.zip`))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('project'))
     .on('end', cb);
 });
 
@@ -49,14 +49,14 @@ gulp.task('upload', (cb) => {
 gulp.task('shell', (cb) => {
   gulpSSH
     .shell(['cd /root', 'sh linwb.sh', 'ls'], { filePath: 'shell.log' })
-    .pipe(gulp.dest('assets'))
+    .pipe(gulp.dest('dist'))
     .on('end', cb);
 });
 
 // 清除生产目录文件
 gulp.task('clear', (cb) => {
   // del(['dist/**', '!dist']);
-  del.sync(['./dist']);
+  del.sync(['./project']);
   cb();
 });
 

@@ -9,7 +9,16 @@ function insertUserWechatSql(insertData, callback) {
   mysqlDB.execute(sql, insertData, callback);
 }
 
+function getUserWechatSqlData(queryParams) {
+
+  const sql = `select wechatID,openID,headImgUrl,nickname
+  from member_wechats
+  where openID=:openID`;
+
+  return mysqlDB.queryObject(sql, queryParams);
+}
 
 module.exports = {
   insertUserWechatSql,
+  getUserWechatSqlData,
 };

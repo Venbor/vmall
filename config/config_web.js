@@ -1,6 +1,6 @@
 module.exports = {
-  sitePort: 6050, // 端口
-  isCsrf: true, // 是否开启CSRF验证
+  sitePort: 8090, // 端口
+  isCsrf: false, // 是否开启CSRF验证
   ignoreCsrfs: [], // 忽略CSRF验证的请求地址数组 
   cookieSecret: 'mycookie', // cookie签名
   sessionName: 'session_key', // session键值
@@ -12,6 +12,12 @@ module.exports = {
     password: '',
     database: 'linwb_db',
     port: 3306,
+    // 远程
+    // host: '103.213.250.157',
+    // user: 'outroot',
+    // password: 'root2018',
+    // database: 'linwb_db',
+    // port: 3306,
   },
   // redis配置
   redisConfig: {
@@ -32,7 +38,7 @@ module.exports = {
       appdebug: {
         category: 'linwb', // 日志分类
         type: 'file', // 输出日志方式
-        filename: 'assets/debug.log',
+        filename: 'dist/debug.log',
       },
     }
   },
@@ -48,13 +54,13 @@ module.exports = {
     timeExpire: 3600,
   },
 
-  // // 七牛云存储
-  // qiniu: {
-  //     accessKey: 'PTMAV5XHd0m7vXNscrj0zTSXNr6_-oiRWVGdNLFM',
-  //     secretKey: 'LCK52jNsvecZEhvJp0-At3pdoIi3XhtPojv8wptq',
-  //     bucketName: 'cmts1',
-  //     qiniuDomain: 'http://ozqzt3npb.bkt.clouddn.com/',
-  // },
+  // 七牛云存储
+  qiniu: {
+    accessKey: 'lLwJd3cfmBNIScBgm0wW_4npKHiMw8MnCnuKeuh3',
+    secretKey: 'kuMSInea291K6PMP3-mMizCp2IF5RldV28p3jABw',
+    bucketName: 'vmall',
+    qiniuDomain: 'http://p7jp82f9z.bkt.clouddn.com/',
+  },
 
 
   // redisPrename: {

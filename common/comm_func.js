@@ -11,6 +11,16 @@ module.exports = {
       }]);
     });
   },
+  // 错误处理函数
+  handlerError: function (middleware) {
+    return async (req, res, next) => {
+      try {
+        await middleware(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    };
+  },
   // request GET请求封装
   requestGET: function (url, data, cb) {
     if (typeof data === 'function') {

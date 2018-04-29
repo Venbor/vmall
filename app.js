@@ -3,19 +3,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const compression = require('compression');
-const history = require('connect-history-api-fallback');
 const log4js = require('log4js');
 const csrf = require('csurf');
-const auth = require('./common/auth.js');
+// const auth = require('./config/auth.js');
 const config = require('./config/config_web');
-const configRoute = require('./config/config_route.js');
 const mountRoute = require('./routes_mount.js');
 
 const app = express();
 const router = express.Router();
 
 // 设置模板引擎为html
-app.set('views', path.resolve(__dirname, ''));
+app.set('views', path.resolve(__dirname, './dist'));
 app.set('view engine', 'html');
 app.engine('html', require('ejs-mate'));
 
@@ -70,25 +68,16 @@ log4js.configure(config.loggerConfig);
 global.logger = log4js.getLogger();
 global.logger.debug('debug', 'DEBUG开启');
 
-
-// 静态化文件
-app.use('/assets', express.static(path.resolve(__dirname, 'assets')));
-// vue打包文件
-app.use('/static', express.static(path.resolve(__dirname, 'static')));
+// 静态化dist文件
+app.use(express.static(path.resolve(__dirname, './dist')));
 
 // api接口路由
-app.use('/api', mountRoute(router, configRoute));
-
-// 渲染前端页面,history进行路由重写
-app.use(history({ rewrites: [{ from: /^\/\w*$/, to: '/' }] }));
+app.use('/api', mountRoute(router));
 
 // 读取根目录index文件并渲染
-if (require('fs').existsSync('index.html')) {
-  app.get('/', (req, res) => { res.render('index'); });
-  // app.get('/', auth.userWechatLogin, (req, res) => { res.render('index'); });
-}
+app.get('*', (req, res) => { res.render('index'); });
 
-// 拦截跨域CSRF攻击
+// 错误处理/拦截跨域CSRF攻击
 app.use((err, req, res, next) => {
   if (!config.isCsrf) {
     next();
@@ -99,9 +88,10 @@ app.use((err, req, res, next) => {
     res.send('invalid csrf token');
     return;
   }
-  global.logger.debug('code:500', err);
+  // 处理全局错误
+  global.logger.debug(err.type || 'SYSTEM', `ERROR_MESSAGE: ${err}`);
   res.status(500);
-  res.send('服务器内部错误');
+  res.send(`系统错误，我们会尽快修复${err}`);
 });
 
 // 启动 Web 服务

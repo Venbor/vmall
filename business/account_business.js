@@ -22,8 +22,8 @@ function insertUserWechatLogic(insertData, callback) {
  "openID": "openID"
  *
  */
-function getUserWechatDataLogic(queryParams, callback) {
-  accountDao.getUserWechatSqlData(queryParams, callback);
+async function getUserWechatDataLogic(queryParams) {
+  return accountDao.getUserWechatSqlData(queryParams);
 }
 
 /**
