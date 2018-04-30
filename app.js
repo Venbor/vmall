@@ -79,19 +79,17 @@ app.get('*', (req, res) => { res.render('index'); });
 
 // 错误处理/拦截跨域CSRF攻击
 app.use((err, req, res, next) => {
-  if (!config.isCsrf) {
-    next();
-    return;
-  }
   if (err.code === 'EBADCSRFTOKEN') {
     res.status(400);
     res.send('invalid csrf token');
     return;
   }
   // 处理全局错误
-  global.logger.debug(err.type || 'SYSTEM', `ERROR_MESSAGE: ${err}`);
+  global.logger.debug(err);
   res.status(500);
-  res.send(`系统错误，我们会尽快修复${err}`);
+  // res.send('系统错误，我们会尽快修复');
+  res.send(`错误信息: ${err}`);
+  next();
 });
 
 // 启动 Web 服务

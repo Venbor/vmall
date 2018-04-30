@@ -35,7 +35,7 @@ gulp.task('zip', (cb) => {
 
 // 上传到服务器
 gulp.task('upload', (cb) => {
-  gulp.src('dist/*.zip')
+  gulp.src('project/*.zip')
     .pipe(ftp(Object.assign({
       remotePath: '/projects/projectzip/',
       host: serverConfig.host,
@@ -53,6 +53,14 @@ gulp.task('shell', (cb) => {
     .on('end', cb);
 });
 
+// 重启Nginx
+gulp.task('nginx', (cb) => {
+  gulpSSH
+    .shell(['cd /usr/local/nginx/sbin', './nginx -s stop', './nginx'], { filePath: 'shell.log' })
+    .pipe(gulp.dest('dist'))
+    .on('end', cb);
+});
+
 // 清除生产目录文件
 gulp.task('clear', (cb) => {
   // del(['dist/**', '!dist']);
@@ -60,4 +68,4 @@ gulp.task('clear', (cb) => {
   cb();
 });
 
-gulp.task('default', cb => gulpSequence('zip', 'upload', 'shell', 'clear', cb));
+gulp.task('default', cb => gulpSequence('zip', 'upload', 'clear', 'shell', cb));

@@ -30,14 +30,17 @@ function queryPromisify(fn, conn) {
   return (...args) => new Promise((resolve, reject) => {
     fn.apply(conn, [...args, (err, res) => {
       if (conn) { conn.release(); }
-      if (err) return reject(err);
+      if (err) {
+        reject(err);
+        return;
+      };
       resolve(res);
     }]);
   });
 };
 
 /* 查询对象语句 sql,params */
-const queryObject = async function(...args) {
+const queryObject = async function (...args) {
   const conn = await getConnection();
   const results = await queryPromisify(conn.query, conn)(...args);
   return (results && results.length > 0) ? results[0] : undefined;
@@ -45,15 +48,15 @@ const queryObject = async function(...args) {
 exports.queryObject = queryObject;
 
 /* 查询列表语句 sql, params */
-const queryList = async function(...args) {
-  const conn = await getConnection();
-  const results = await queryPromisify(conn.query, conn)(...args);
-  return results;
+const queryList = async function (...args) {
+    const conn = await getConnection();
+    const results = await queryPromisify(conn.query, conn)(...args);
+    return results;
 }
 exports.queryList = exports.execute = queryList;
 
 /* 查询列表分页语句 sql, params */
-const queryListForPagination = async function(sql, params) {
+const queryListForPagination = async function (sql, params) {
   const sqlCount = `select count(1) as count from (${sql}) sqltotal`;
   const sqlLimit = (params.hasOwnProperty('offset') && params.pageSize) ? ' limit :offset, :pageSize' : '';
   const [countResult, rowsResult] = await Promise.all([
@@ -63,10 +66,10 @@ const queryListForPagination = async function(sql, params) {
   const total = countResult ? countResult.count : 0;
   return { total: total, rows: rowsResult || [] };
 }
-exports.queryListForPagination1 = queryListForPagination;
+exports.queryListForPagination = queryListForPagination;
 
 /* mysql事物处理 [{sql:'',paras:'',field:''},...] */
-const executeTransaction = async function(sqlTasks, callback) {
+const executeTransaction = async function (sqlTasks) {
   try {
     const conn = await getConnection();
     await queryPromisify(conn.beginTransaction, '')();
@@ -77,14 +80,15 @@ const executeTransaction = async function(sqlTasks, callback) {
       taskResult[sqlTask.field ? sqlTask.field : key] = result;
     }
     await queryPromisify(conn.commit, conn)();
+    return taskResult;
   } catch (err) {
     try {
       conn.rollback();
     } catch (error) {
       conn.release();
-      global.logger.debug('MYSQL', `errmsg:${error ? (error.message || error) : undefined}`); // 记录错误日志
+      global.logger.debug(`事物回滚出错:${error}`); // 记录错误日志
     }
-    throw new Error({ type: 'MYSQL', err: err })
+    throw new Error(err)
   }
 }
 exports.executeTransaction = executeTransaction;

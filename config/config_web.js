@@ -1,5 +1,5 @@
 module.exports = {
-  sitePort: 8090, // 端口
+  sitePort: 8080, // 端口
   isCsrf: false, // 是否开启CSRF验证
   ignoreCsrfs: [], // 忽略CSRF验证的请求地址数组 
   cookieSecret: 'mycookie', // cookie签名
@@ -7,23 +7,17 @@ module.exports = {
   sessionSecret: 'vamll', // session签名
   // mysql配置
   mysqlConfig: {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'linwb_db',
-    port: 3306,
-    // 远程
-    // host: '103.213.250.157',
-    // user: 'outroot',
-    // password: 'root2018',
+    // host: 'localhost',
+    // user: 'root',
+    // password: '',
     // database: 'linwb_db',
     // port: 3306,
-  },
-  // redis配置
-  redisConfig: {
-    host: '127.0.0.1',
-    port: 6379,
-    pass: '',
+    // 远程
+    host: '103.213.250.157',
+    user: 'outroot',
+    password: 'root2018',
+    database: 'linwb_db',
+    port: 3306,
   },
   // 日志配置
   loggerConfig: {
@@ -61,16 +55,7 @@ module.exports = {
     bucketName: 'vmall',
     qiniuDomain: 'http://p7jp82f9z.bkt.clouddn.com/',
   },
-
-
-  // redisPrename: {
-  //     propertymap: 'SYSPROPERTYMAP',
-  //     oauthToken: 'collectToken',
-  // },
-
   // socketConfig: {
   //     host: 'http://127.0.0.1:6086',
   // },
-
-
 };
