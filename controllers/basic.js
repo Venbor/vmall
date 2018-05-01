@@ -4,22 +4,18 @@ const ResJson = require('../config/ResJson');
 const basicBusiness = require('../business/basic_business');
 const webConfige = require('../config/config_web.js');
 
-
 /**
- * @api {POST} /qiniuuploadtoken 获取七牛上传token
- * @apiName qiniuuploadtoken
+ * @api {POST} /api/qiniuuploadtoken 获取七牛上传token
  * @apiGroup Basic
- * @apiVersion  1.0.0
- *
  * @apiParamExample  {Object} 请求示例:
     {
     }
  *
  * @apiSuccessExample {Object} 响应示例:
-    HTTP/1.1 200 OK
     {
+      errcode: 0,
+      errmsg: "操作成功"
     }
- *
  */
 const qiniuUploadToken = {
   url: '/getqiniuuploadtoken',
@@ -35,11 +31,27 @@ const qiniuUploadToken = {
   },
 };
 
-// 获取全国地址
+/**
+ * @api {POST} /api/getarealist 获取全国地址
+ * @apiGroup Basic
+ *
+ * @apiParam  {Number} parentID  设置为0时获取全国省份列表
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
 const getAreaList = {
   url: '/getarealist',
   method: 'GET',
   middlewares: [],
+  routeDesc: '获取全国地址',
   handle: async function (req, res) {
     const parentID = req.query.parentID;
     if (!validator.isIntFormat(parentID, { min: 0 })) {

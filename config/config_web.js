@@ -7,17 +7,17 @@ module.exports = {
   sessionSecret: 'vamll', // session签名
   // mysql配置
   mysqlConfig: {
-    // host: 'localhost',
-    // user: 'root',
-    // password: '',
+    host: 'localhost',
+    user: 'root',
+    password: '123456',
+    database: 'venbor_db',
+    port: 3306,
+    // 远程
+    // host: '103.213.250.157',
+    // user: 'outroot',
+    // password: 'root2018',
     // database: 'linwb_db',
     // port: 3306,
-    // 远程
-    host: '103.213.250.157',
-    user: 'outroot',
-    password: 'root2018',
-    database: 'linwb_db',
-    port: 3306,
   },
   // 日志配置
   loggerConfig: {

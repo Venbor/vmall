@@ -4,6 +4,7 @@ node_modules/
 /dist/
 /logs/
 /static/
+/apidoc/
 
 # Editor directories and files
 .idea

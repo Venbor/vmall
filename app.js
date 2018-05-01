@@ -70,6 +70,8 @@ global.logger.debug('debug', 'DEBUG开启');
 
 // 静态化dist文件
 app.use(express.static(path.resolve(__dirname, './dist')));
+// 静态化API接口文件
+app.use('/apidoc', express.static(path.resolve(__dirname, './apidoc')));
 
 // api接口路由
 app.use('/api', mountRoute(router));

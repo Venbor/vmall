@@ -2,13 +2,26 @@
 const ResJson = require('../config/ResJson');
 const accountBusiness = require('../business/account_business');
 
-// 获取用户登录信息
+
+/**
+ * @api {GET} /api/getuserwechatdata 获取用户信息
+ * @apiGroup Account
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
 const getuserinfo = {
   url: '/getuserwechatdata',
   method: 'get',
   middlewares: [],
   routeDesc: '获取用户信息',
-  handle: async (req, res) => {
+  handle: async function (req, res) {
     const openID = req.session.currentUser.openID;
     const userDataResult = await accountBusiness.getUserWechatDataLogic({ openID: openID });
     res.send(new ResJson(userDataResult));

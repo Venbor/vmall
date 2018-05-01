@@ -2,8 +2,19 @@
 const ResJson = require('../config/ResJson');
 const cartBusiness = require('../business/cart_business');
 
-
-// 购物车页-获取购物车商品列表
+/**
+ * @api {GET} /api/getcartgoodslist 获取购物车商品列表
+ * @apiGroup Cart
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
 const getCartGoodsList = {
   url: '/getcartgoodslist',
   method: 'GET',

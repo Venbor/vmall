@@ -3,11 +3,24 @@ const ResJson = require('../config/ResJson');
 const goodsBusiness = require('../business/goods_business');
 
 
-// 商品-获取商品列表
+/**
+ * @api {GET} /api/getgoodslist 获取商品列表
+ * @apiGroup Goods
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
 const getGoodsList = {
   url: '/getgoodslist',
   method: 'GET',
   middlewares: [],
+  routeDesc: '获取商品列表',
   handle: async function (req, res) {
     // const operateUser = req.session.currentUser.userName || '';
     const operateUser = '15176745000';
@@ -22,12 +35,27 @@ const getGoodsList = {
     res.send(new ResJson(goodsResult));
   },
 };
-
-// 商品-获取商品详情
+/**
+ * @api {GET} /api/getgoodsdetail 获取商品详情
+ * @apiName getgoodsdetail
+ * @apiGroup Goods
+ * @apiDescription 商品
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
 const getGoodsDetail = {
   url: '/getgoodsdetail',
   method: 'GET',
   middlewares: [],
+  routeDesc: '获取商品详情',
   handle: async function (req, res) {
     const queryParams = req.query;
     if (!validator.isIntFormat(queryParams.goodsID, { min: 1 })) {
@@ -38,12 +66,27 @@ const getGoodsDetail = {
     res.send(new ResJson(detailData));
   },
 };
-
-// 商品-获取商品类别
+/**
+ * @api {GET} /api/getgoodsclasslist 获取商品类别
+ * @apiName getgoodsclasslist
+ * @apiGroup Goods
+ * @apiDescription 商品
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
 const getGoodsClassList = {
   url: '/getgoodsclasslist',
   method: 'GET',
   middlewares: [],
+  routeDesc: '获取商品类别',
   handle: async function (req, res) {
     const goodsClassResult = await goodsBusiness.getGoodsClassListLogic();
     res.send(new ResJson(goodsClassResult));
