@@ -13,7 +13,7 @@ const app = express();
 const router = express.Router();
 
 // 设置模板引擎为html
-app.set('views', path.resolve(__dirname, './dist'));
+app.set('views', path.resolve(__dirname, ''));
 app.set('view engine', 'html');
 app.engine('html', require('ejs-mate'));
 
@@ -68,10 +68,12 @@ log4js.configure(config.loggerConfig);
 global.logger = log4js.getLogger();
 global.logger.debug('debug', 'DEBUG开启');
 
-// 静态化dist文件
-app.use(express.static(path.resolve(__dirname, './dist')));
+// 静态化vue打包文件
+app.use('/static', express.static(path.resolve(__dirname, './static')));
 // 静态化API接口文件
 app.use('/apidoc', express.static(path.resolve(__dirname, './apidoc')));
+// 静态化logs日志文件
+app.use('/logs', express.static(path.resolve(__dirname, './logs')));
 
 // api接口路由
 app.use('/api', mountRoute(router));

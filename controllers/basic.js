@@ -39,12 +39,18 @@ const qiniuUploadToken = {
  *
  * @apiParamExample  {Object} 请求示例:
     {
+      parentID: 0
     }
  *
  * @apiSuccessExample {Object} 响应示例:
     {
       errcode: 0,
-      errmsg: "操作成功"
+      errmsg: "操作成功",
+      resobj: [
+       {id: "110000", parentID: 0, name: "北京市", shortName: "北京"}
+       {id: "120000", parentID: 0, name: "天津市", shortName: "天津"}
+       {id: "130000", parentID: 0, name: "河北省", shortName: "河北"}
+      ]
     }
  */
 const getAreaList = {

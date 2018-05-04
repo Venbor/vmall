@@ -16,7 +16,7 @@ module.exports = {
     // host: '103.213.250.157',
     // user: 'outroot',
     // password: 'root2018',
-    // database: 'linwb_db',
+    // database: 'venbor_db',
     // port: 3306,
   },
   // 日志配置
@@ -32,7 +32,7 @@ module.exports = {
       appdebug: {
         category: 'linwb', // 日志分类
         type: 'file', // 输出日志方式
-        filename: 'dist/debug.log',
+        filename: 'logs/index.html',
       },
     }
   },
