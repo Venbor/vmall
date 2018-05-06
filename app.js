@@ -5,9 +5,10 @@ const session = require('express-session');
 const compression = require('compression');
 const log4js = require('log4js');
 const csrf = require('csurf');
-// const auth = require('./config/auth.js');
+const auth = require('./config/auth.js');
 const config = require('./config/config_web');
 const mountRoute = require('./routes_mount.js');
+const ResJson = require('./config/ResJson');
 
 const app = express();
 const router = express.Router();
@@ -42,6 +43,14 @@ app.use(compression());
 
 // 配置禁止跨域防止CSRF攻击
 app.use((req, res, next) => {
+  req.session.currentUser = {
+    wechatID: 2872,
+    openID: 'oE3bvwhTrCEJPkIjU947A8lNiZbo',
+    realname: '林文波',
+    mobile: '18689479030',
+    nickname: '老林',
+    headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/WZAp2Y8MSR9HvLqLmZBNxWLdIc1hwria0nucjRb0nrTHpRS7LGZa1p7xm6lRlWN3NVUVUzcMz6Nujeudt5fD2IQ/132',
+  };
   if (!config.isCsrf) {
     next();
     return;
@@ -79,7 +88,7 @@ app.use('/logs', express.static(path.resolve(__dirname, './logs')));
 app.use('/api', mountRoute(router));
 
 // 读取根目录index文件并渲染
-app.get('*', (req, res) => { res.render('index'); });
+app.get('*', auth.userWechatLogin, (req, res) => { res.render('index'); });
 
 // 错误处理/拦截跨域CSRF攻击
 app.use((err, req, res, next) => {
@@ -91,8 +100,8 @@ app.use((err, req, res, next) => {
   // 处理全局错误
   global.logger.debug(err);
   res.status(500);
-  // res.send('系统错误，我们会尽快修复');
-  res.send(`错误信息: ${err}`);
+  // res.send(new ResJson(1, '系统错误，我们会尽快修复'));
+  res.send(new ResJson(1, `错误信息: ${err}`));
   next();
 });
 
