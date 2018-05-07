@@ -36,7 +36,7 @@ gulp.task('change', (cb) => {
 
 // 压缩文件
 gulp.task('zip', (cb) => {
-  gulp.src(['**', '!node_modules/**', '!node_modules/', '!dist/**', '!dist/'])
+  gulp.src(['**', '!node_modules/**', '!node_modules/', '!static/**', '!static/', '!index.html'])
     .pipe(zip(`LINWB${moment().format('YYYY-MM-DD')}.zip`))
     .pipe(gulp.dest('dist'))
     .on('end', cb);

@@ -1,11 +1,38 @@
 const validator = require('validator');
+// 基础验证
+/*
+ isEmail(str [, options])  检查字符串是否是邮箱 ,options是一个对象默认为
+ isMobilePhone(str, 'zh-CN') : 检查字符串是否是手机号，第二个参数表示地区
+ isBoolean(str)  检查字符串是否是boolean值
+ isNull(str)  检查字符串是否为空,(length为0)
+ isIn(str, values) : 检查字符串是否在允许的值
+ isLength(str, options) 检查字符串长度是否在范围内,options是个对象,包含最大值,最小值,比如{min:0,max:100}
+ isInt(str [, options]) 检查字符串是否是整数,options是个对象,包含最大值,最小值,比如{min:0,max:100}
+ isFloat(str [, options]) 检查字符串是否是浮点数, options是个对象,包含最大最小值,比如{min:0.5,max:10.5}
+ isJSON(str)  检查字符串是否是有效的json格式
+ isNumeric(str)  检查字符串是否只包含数字
+ isLowercase(str)  检查字符串是否都是小写字母
+ isUppercase(str)  检查字符串是否是大写
+ isDate(str)  检查字符串是否是日期
+ isWhitelisted(str, chars) 检查str是否都出现在chars中
+ isURL(str [, options])  检查字符串是否是个URL
+ */
 
-// 公共验证
+// 扩展验证
+// 验证是否为空（undefined、null、空格、空字符串）
+validator.isNullOrEmpty = function (str) {
+  const isEmptyStr = str === undefined || str === null;
+  return !isEmptyStr ? `${str}`.replace(/^\s+|\s+$/g, '').length === 0 : isEmptyStr;
+};
+// 验证时间格式
 validator.isDateFormat = function (str, format) {
-  /* YYYY-MM-DD
-   YYYY-MM-DD HH:mm:ss
-   YYYY-MM-DD HH:mm
-   HH:mm:ss */
+  /*
+   YYYYMM: YYYY-MM
+   YYYYMMDD: YYYY-MM-DD
+   YYYYMMDDHHmmss: YYYY-MM-DD HH:mm:ss
+   YYYYMMDDHHmm: YYYY-MM-DD HH:mm
+   HHmmss: HH:mm:ss
+   */
   str += '';
   const regex = {
     YYYYMMDD: /^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-9]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))$/,
@@ -14,22 +41,24 @@ validator.isDateFormat = function (str, format) {
     HHmmss: /^(0\d{1}|1\d{1}|2[0-3]):[0-5]\d{1}:([0-5]\d{1})$/,
     YYYYMM: /^\d{4}-(?:0[1-9]|1[0-2])$/,
   };
-
   if (!regex.hasOwnProperty(format)) {
     return false;
   }
-
   return regex[format].test(str);
 };
-
-// float min e.g., max e.l. digit e.l.
+// 验证浮点型
 validator.isFloatFormat = function (str, options) {
-  str += '';
+  /*
+   {min: 3} 允许最小值
+   {max: 10}: 允许最大值
+   {neq_zero: true}: 不能为0
+   {digit: 2}: 验证小数点后位数
+   */
+  str += ''; // 转换为字符串
   options = options || {};
   if (str === '' || str === '.') {
     return false;
   }
-
   const regex = /^(?:[-+]?(?:[0-9]+))?(?:\.[0-9]*)?(?:[eE][\+\-]?(?:[0-9]+))?$/;
 
   function digitLen() {
@@ -51,100 +80,40 @@ validator.isFloatFormat = function (str, options) {
 
   return regex.test(str) && minMax() && neqZero() && digitLen();
 };
-
+// 验证为整型
 validator.isIntFormat = function (str, options) {
   return validator.isInt(`${str}`, options);
 };
-
+// 验证值为0或1
 validator.isInt01 = function (str) {
   str += '';
   return validator.isInt(str, { min: 0, max: 1 });
 };
-
+// 验证长度为11位（手机号长度）
 validator.isInt11 = function (str) {
   const regex = /^\d{11}$/;
   return regex.test(str);
 };
-
-validator.isIntArray = function (array) {
-  return array instanceof Array && array.length > 0 && (array.filter(f => validator.isIntFormat(f, { min: 1 }))).length > 0;
-};
-
-// rules [ field rule opt ]
-validator.isArray = function (array, options = {}, rules = []) {
-
+// 验证数组长度
+validator.isArray = function (array, options = {}) {
   function minMax() {
     return (!options.hasOwnProperty('min') || array.length >= options.min)
       && (!options.hasOwnProperty('max') || array.length <= options.max);
   }
-
-  function filterRules(data) {
-    let result = true;
-    rules.forEach((r) => {
-      const field = r.field ? data[r.field] : data;
-      result = result && (r.required ? !validator.isNullOrEmpty(field) : result);
-      result = result && (r.opt ? validator[r.rule](field, r.opt) : validator[r.rule](field));
-    });
-    return result;
-  }
-
-  function content() {
-    if (array.length === 0 || rules.length === 0) {
-      return true;
-    }
-    return (array.filter(f => filterRules(f))).length > 0;
-  }
-
-  return array instanceof Array && minMax() && content();
+  return array instanceof Array && minMax();
 };
-
+// 验证为中文
 validator.isChineseName = function (str) {
   str += '';
   const regex = /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/;
   return regex.test(str);
 };
-
+// 验证只能为英文和_等
 validator.isEnglishLetter = function (str) {
   str += '';
   const regex = /^[_a-zA-Z]+$/;
   return regex.test(str);
 };
-
-validator.isCommaSeparated = function (str) {
-  const reg = /^([0-9]+[,])*([0-9]+)$/;
-  return reg.test(str);
-};
-
-validator.isNullOrEmpty = function (str) {
-  const isEmptyStr = str === undefined || str === null;
-  return !isEmptyStr ? `${str}`.replace(/^\s+|\s+$/g, '').length === 0 : isEmptyStr;
-};
-
-// 返回false为超出范围
-validator.isLengthCorrect = function (str, opt) {
-  str = typeof str === 'string' ? str : '';
-  opt = opt || {};
-
-  const getByteLen = (val) => {
-    let len = 0;
-    for (let i = 0; i < val.length; i++) {
-      const length = val.charCodeAt(i);
-      len += (length >= 0 && length <= 128) ? 1 : 2;
-    }
-    return len;
-  };
-
-  const len = getByteLen(str);
-
-  return (!opt.hasOwnProperty('min') || len >= opt.min)
-    && (!opt.hasOwnProperty('max') || len <= opt.max);
-};
-
-validator.isMsgEventFile = function (str) {
-  const reg = /^[A-Za-z0-9_]+msg_event.js$/;
-  return reg.test(str);
-};
-
 // 数值计算精度转换
 validator.numberCalcFormat = function (str, digit) {
   if (!validator.isFloatFormat(str) || !validator.isIntFormat(digit, { min: 1 })) {
@@ -153,12 +122,4 @@ validator.numberCalcFormat = function (str, digit) {
   return Math.round(Number.parseFloat(`${str}`) * (10 * digit)) / (10 * digit);
 };
 
-// 业务验证
-
-validator.isIdentifyCode = function (str) {
-  str += '';
-  const reg = /^\d{4}$/;
-  return reg.test(str);
-};
-
-module.exports = exports = validator;
+export default validator;
