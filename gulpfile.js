@@ -85,4 +85,4 @@ gulp.task('clear', (cb) => {
   cb();
 });
 
-gulp.task('default', cb => gulpSequence('change', 'zip', 'rechange', 'upload', 'clear', 'shell', 'nginx', cb));
+gulp.task('default', cb => gulpSequence('change', 'zip', 'rechange', 'upload', 'clear', 'shell', cb));

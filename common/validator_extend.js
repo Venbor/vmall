@@ -67,8 +67,8 @@ validator.isFloatFormat = function (str, options) {
   }
 
   function minMax() {
-    return (!options.hasOwnProperty('min') || str >= options.min)
-      && (!options.hasOwnProperty('max') || str <= options.max);
+    return (!options.hasOwnProperty('min') || str >= options.min) &&
+      (!options.hasOwnProperty('max') || str <= options.max);
   }
 
   function neqZero() {
@@ -97,8 +97,8 @@ validator.isInt11 = function (str) {
 // 验证数组长度
 validator.isArray = function (array, options = {}) {
   function minMax() {
-    return (!options.hasOwnProperty('min') || array.length >= options.min)
-      && (!options.hasOwnProperty('max') || array.length <= options.max);
+    return (!options.hasOwnProperty('min') || array.length >= options.min) &&
+      (!options.hasOwnProperty('max') || array.length <= options.max);
   }
   return array instanceof Array && minMax();
 };
@@ -122,4 +122,4 @@ validator.numberCalcFormat = function (str, digit) {
   return Math.round(Number.parseFloat(`${str}`) * (10 * digit)) / (10 * digit);
 };
 
-export default validator;
+module.exports = validator;

@@ -32,7 +32,7 @@ module.exports = {
       appdebug: {
         category: 'linwb', // 日志分类
         type: 'file', // 输出日志方式
-        filename: 'logs/index.html',
+        filename: 'logs/debug.log',
       },
     }
   },
@@ -44,7 +44,7 @@ module.exports = {
     mchID: '10000100',
     partnerKey: 'w11211112222222212122134135674r5',
     spbillCreateIP: '127.0.0.1',
-    notifyUrl: 'test.szchumeng.com',
+    notifyUrl: '',
     timeExpire: 3600,
   },
 

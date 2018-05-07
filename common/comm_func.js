@@ -13,7 +13,7 @@ module.exports = {
   },
   // 错误处理函数
   handlerError: function (middleware) {
-    return async(req, res, next) => {
+    return async (req, res, next) => {
       try {
         await middleware(req, res, next);
       } catch (err) {
