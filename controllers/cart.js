@@ -15,8 +15,7 @@ const cartBusiness = require('../business/cart_business');
       errmsg: "操作成功"
     }
  */
-const getCartGoodsList = {
-  url: '/getcartgoodslist',
+exports.getCartGoodsList = {
   method: 'GET',
   middlewares: [],
   routeDesc: '获取购物车商品列表',
@@ -54,4 +53,3 @@ const getCartGoodsList = {
 //   },
 // };
 //
-module.exports = [getCartGoodsList];

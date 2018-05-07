@@ -26,6 +26,7 @@
     "no-loop-func": 1,
     "no-plusplus":0,
     "func-names": 0,
+    "guard-for-in": 0,
     "no-mixed-operators": 0,
     "import/no-extraneous-dependencies": 1,
     "object-shorthand": 0,

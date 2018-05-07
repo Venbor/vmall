@@ -16,8 +16,7 @@ const accountBusiness = require('../business/account_business');
       errmsg: "操作成功"
     }
  */
-const getuserinfo = {
-  url: '/getuserwechatdata',
+exports.getUserWechatData = {
   method: 'get',
   middlewares: [],
   routeDesc: '获取用户信息',
@@ -27,6 +26,3 @@ const getuserinfo = {
     res.send(new ResJson(userDataResult));
   },
 };
-
-
-module.exports = [getuserinfo];

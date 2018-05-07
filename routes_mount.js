@@ -24,21 +24,23 @@ function mountRoute(router) {
   filesList.forEach((filePath) => {
     // 循环引入文件
     const controller = require(filePath);
-    if (!Array.isArray(controller)) {
-      console.error(`导出类型必须为数组，出错路径:${JSON.stringify(controller)}`);
+    if (Array.isArray(controller) || typeof controller !== 'object') {
+      console.error(`路由挂载类型出错: ${typeof controller}，出错路径:${JSON.stringify(filePath)}`);
       return router;
     }
     // 循环挂载文件内方法
-    controller.forEach((item) => {
+    for (const key in controller) {
       const model = { url: '', method: 'get', middlewares: [], routeDesc: '', handle: '' };
+      const item = controller[key];
       // 模型赋值
-      model.url = item.url || '';
+      model.url = key && `/${key.toLowerCase()}`;
       model.method = (item.method || 'get').toLowerCase();
       model.middlewares = item.middlewares || [];
       model.routeDesc = item.routeDesc || '';
-      model.handle = item.handle || function() {};
+      model.handle = item.handle || function () {};
+      console.warn(`路由挂载成功：${model.url}`);
       router[model.method](model.url, compose(model.middlewares, model.url), common.handlerError(model.handle));
-    });
+    }
   });
   return router;
 }

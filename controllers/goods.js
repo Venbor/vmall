@@ -16,8 +16,7 @@ const goodsBusiness = require('../business/goods_business');
       errmsg: "操作成功"
     }
  */
-const getGoodsList = {
-  url: '/getgoodslist',
+exports.getGoodsList = {
   method: 'GET',
   middlewares: [],
   routeDesc: '获取商品列表',
@@ -51,8 +50,7 @@ const getGoodsList = {
       errmsg: "操作成功"
     }
  */
-const getGoodsDetail = {
-  url: '/getgoodsdetail',
+exports.getGoodsDetail = {
   method: 'GET',
   middlewares: [],
   routeDesc: '获取商品详情',
@@ -82,8 +80,7 @@ const getGoodsDetail = {
       errmsg: "操作成功"
     }
  */
-const getGoodsClassList = {
-  url: '/getgoodsclasslist',
+exports.getGoodsClassList = {
   method: 'GET',
   middlewares: [],
   routeDesc: '获取商品类别',
@@ -92,4 +89,3 @@ const getGoodsClassList = {
     res.send(new ResJson(goodsClassResult));
   },
 };
-module.exports = [getGoodsList, getGoodsDetail, getGoodsClassList];

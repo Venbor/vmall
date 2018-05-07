@@ -18,8 +18,7 @@ const commonFunc = require('../common/comm_func.js');
       "resobj": "lLwJd3cfmBNIScBgm0wW_4npKHiMw8MnCnuKeuh3:cL7AI3sYwkZ0RTnVn-LYunTcXxY=:eyJzY29wZSI6InZtYWxsIiwiZGVhZGxpbmUiOjE1MjU0NTQ2MjV9"
     }
  */
-const qiniuUploadToken = {
-  url: '/getqiniuuploadtoken',
+exports.getQiniuUploadToken = {
   method: 'POST',
   middlewares: [],
   routeDesc: '获取七牛上传token',
@@ -33,7 +32,7 @@ const qiniuUploadToken = {
 };
 
 /**
- * @api {POST} /api/getarealist 获取全国地址
+ * @api {POST} /api/getarealist 获取全国省市区列表
  * @apiGroup Basic
  *
  * @apiParam  {Number} parentID  设置为0时获取全国省份列表
@@ -54,8 +53,7 @@ const qiniuUploadToken = {
       ]
     }
  */
-const getAreaList = {
-  url: '/getarealist',
+exports.getAreaList = {
   method: 'GET',
   middlewares: [],
   routeDesc: '获取全国地址',
@@ -73,7 +71,7 @@ const getAreaList = {
 };
 
 /**
- * @api {POST} /api/insertaddress 新增地址
+ * @api {POST} /api/insertaddress 新增收货地址
  * @apiGroup Basic
  *
  * @apiParam  {String} contactName  联系人姓名
@@ -107,8 +105,7 @@ const getAreaList = {
     }
  */
 
-const insertaddress = {
-  url: '/insertaddress',
+exports.insertAddress = {
   method: 'POST',
   middlewares: [],
   routeDesc: '新增地址',
@@ -137,7 +134,7 @@ const insertaddress = {
 };
 
 /**
- * @api {GET} /api/getaddresslist 获取地址列表
+ * @api {GET} /api/getaddresslist 收货地址列表
  * @apiGroup Basic
  *
  * @apiParamExample  {Object} 请求示例:
@@ -152,11 +149,10 @@ const insertaddress = {
     }
  */
 
-const getaddresslist = {
-  url: '/getaddresslist',
+exports.getAddressList = {
   method: 'GET',
   middlewares: [],
-  routeDesc: '获取地址列表',
+  routeDesc: '收货地址列表',
   handle: async function (req, res) {
     const queryParams = {};
     queryParams.wechatID = req.session.currentUser.wechatID;
@@ -165,4 +161,92 @@ const getaddresslist = {
   },
 };
 
-module.exports = [qiniuUploadToken, getAreaList, insertaddress, getaddresslist];
+/**
+ * @api {POST} /api/deleteaddresslist 删除收货地址
+ * @apiGroup Basic
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功",
+      resobj: [],
+    }
+ */
+
+exports.deleteAddress = {
+  method: 'POST',
+  middlewares: [],
+  routeDesc: '删除收货地址',
+  handle: async function (req, res) {
+    const queryParams = {
+      addressID: req.body.addressID || '',
+      wechatID: req.session.currentUser.wechatID,
+    };
+    await basicBusiness.deleteAddressLogic(queryParams);
+    res.send(new ResJson(''));
+  },
+};
+
+/**
+ * @api {POST} /api/updataaddress 更新收货地址
+ * @apiGroup Basic
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功",
+      resobj: [],
+    }
+ */
+
+exports.updateAddress = {
+  method: 'POST',
+  middlewares: [],
+  routeDesc: '更新地址信息',
+  handle: async function (req, res) {
+    const queryParams = {
+      addressID: req.body.addressID || '',
+      wechatID: req.session.currentUser.wechatID,
+    };
+    await basicBusiness.updateAddressLogic(queryParams);
+    res.send(new ResJson(''));
+  },
+};
+
+/**
+ * @api {POST} /api/getaddress 获取收货地址信息
+ * @apiGroup Basic
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功",
+      resobj: [],
+    }
+ */
+
+exports.getAddressData = {
+  method: 'POST',
+  middlewares: [],
+  routeDesc: '获取收货地址信息',
+  handle: async function (req, res) {
+    const queryParams = {
+      addressID: req.body.addressID || '',
+      wechatID: req.session.currentUser.wechatID,
+    };
+    const addressData = await basicBusiness.getAddressDataLogic(queryParams);
+    res.send(new ResJson(addressData));
+  },
+};
