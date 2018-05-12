@@ -1,5 +1,10 @@
-const request = require('request');
+const axios = require('axios');
+const jwt = require('jsonwebtoken');
 const validator = require('./validator_extend');
+
+// token参数详解
+// 生成token: const token = jwt.sign({key: value}, 'secret', { expiresIn: 60 * 60 }); //一个小时的有效期
+// 解码token: jwt.verify(token, 'secret', function(err, decoded) { console.log(decoded.key) }); // value
 
 module.exports = {
   // 快速转换promise对象
@@ -13,7 +18,7 @@ module.exports = {
   },
   // 错误处理函数
   handlerError: function (middleware) {
-    return async (req, res, next) => {
+    return async(req, res, next) => {
       try {
         await middleware(req, res, next);
       } catch (err) {
@@ -21,34 +26,39 @@ module.exports = {
       }
     };
   },
-  // request GET请求封装
-  requestGET: function (url, data, cb) {
-    if (typeof data === 'function') {
-      cb = data;
-      data = {};
-    }
-    request({
-      url: url,
-      method: 'GET',
-      qs: data,
-    }, (error, response, body) => {
-      cb(error, body);
+  // 生成TOKEN
+  signToken: function (obj) {
+    const token = jwt.sign(obj, 'mysecret', { expiresIn: 60 * 60 * 24 * 7 }); // 一周有效期
+    return token;
+  },
+  // 检验TOKEN
+  verifyToken: function (token) {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, 'mysecret', (err, decoded) => {
+        if (err) return reject(err);
+        resolve(decoded);
+      });
     });
   },
-  // request POST请求封装
-  requestPOST: function (url, data, cb) {
-    if (typeof data === 'function') {
-      cb = data;
-      data = {};
+  // GET请求封装
+  requestGET: async function (url, data) {
+    try {
+      const result = await axios.get(url, { params: data });
+      return result.data;
+    } catch (err) {
+      return {};
     }
-    request({
-      url: url,
-      method: 'POST',
-      body: data,
-    }, (error, response, body) => {
-      cb(error, body);
-    });
   },
+  // POST请求封装
+  requestPOST: async function (url, data) {
+    try {
+      const result = await axios.post(url, data);
+      return result.data;
+    } catch (err) {
+      return {};
+    }
+  },
+  // 表单验证
   checkData: function (requestData, models) {
     /**
      * 表单验证

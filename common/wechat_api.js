@@ -12,47 +12,43 @@ module.exports = {
     res.redirect(oauthUrl); // 跳转到授权页
   },
   // 获取用户accessToken
-  getAccessToken: function (code, cb) {
+  getAccessToken: async function (code) {
     const accessUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token';
-    common.requestGET(accessUrl, {
+    const result = await common.requestGET(accessUrl, {
       appid: wechatcfg.appID,
       secret: wechatcfg.appSecret,
       code: code,
       grant_type: 'authorization_code',
-    }, (err, data) => {
-      cb(err, data);
     });
+    return result;
   },
   // 验证用户accessToken是否有效
-  checkAccessToken: function (accessToken, openid, cb) {
+  checkAccessToken: async function (accessToken, openid) {
     const checkUrl = 'https://api.weixin.qq.com/sns/auth';
-    common.requestGET(checkUrl, {
+    const result = await common.requestGET(checkUrl, {
       openid: openid,
       access_token: accessToken,
-    }, (err, data) => {
-      cb(err, data);
     });
+    return result;
   },
   // 刷新用户accessToken
-  refreshToken: function (refToken, cb) {
+  refreshToken: async function (refToken) {
     const refreshUrl = 'https://api.weixin.qq.com/sns/oauth2/refresh_token';
-    common.requestGET(refreshUrl, {
+    const result = await common.requestGET(refreshUrl, {
       appid: wechatcfg.appID,
       refresh_token: refToken,
       grant_type: 'refresh_token',
-    }, (err, data) => {
-      cb(err, data);
     });
+    return result;
   },
   // 获取用户信息
-  getUserInfo: function (accessToken, openid, cb) {
+  getUserInfo: async function (accessToken, openid) {
     const userInfoUrl = 'https://api.weixin.qq.com/sns/userinfo';
-    common.requestGET(userInfoUrl, {
+    const result = await common.requestGET(userInfoUrl, {
       openid: openid,
       access_token: accessToken,
       lang: 'zh_CN',
-    }, (err, data) => {
-      cb(err, data);
     });
+    return result;
   },
 };

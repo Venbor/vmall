@@ -1,10 +1,8 @@
 module.exports = {
   sitePort: 8080, // 端口
-  isCsrf: false, // 是否开启CSRF验证
-  ignoreCsrfs: [], // 忽略CSRF验证的请求地址数组 
   cookieSecret: 'mycookie', // cookie签名
-  sessionName: 'session_key', // session键值
-  sessionSecret: 'vamll', // session签名
+  // sessionName: 'session_key', // session键值
+  // sessionSecret: 'vamll', // session签名
   // mysql配置
   mysqlConfig: {
     host: 'localhost',
@@ -38,7 +36,6 @@ module.exports = {
   },
   // 微信配置
   wechatConfig: {
-    token: '',
     appID: 'wxedfcac81e30bb19f',
     appSecret: '195909e14a91bc9abbdce019d0d76d27',
     mchID: '10000100',

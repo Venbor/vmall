@@ -3,6 +3,7 @@ const validator = require('../common/validator_extend');
 const ResJson = require('../config/ResJson');
 const basicBusiness = require('../business/basic_business');
 const webConfige = require('../config/config_web.js');
+
 /**
  * @api {POST} /api/qiniuuploadtoken 获取七牛上传token
  * @apiGroup Basic

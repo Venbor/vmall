@@ -1,5 +1,5 @@
-// const validator = require('../common/validator_extend');
 const ResJson = require('../config/ResJson');
+// const validator = require('../common/validator_extend');
 const accountBusiness = require('../business/account_business');
 const commonFunc = require('../common/comm_func.js');
 
@@ -17,11 +17,11 @@ const commonFunc = require('../common/comm_func.js');
     }
  */
 exports.getUserWechatData = {
-  method: 'get',
+  method: 'GET',
   middlewares: [],
   routeDesc: '获取用户信息',
   handle: async function (req, res) {
-    const openID = req.session.currentUser.openID;
+    const openID = req.currentUser.openID;
     const userDataResult = await accountBusiness.getUserWechatDataLogic({ openID: openID });
     res.send(new ResJson(userDataResult));
   },
@@ -68,7 +68,7 @@ exports.insertAddress = {
   routeDesc: '新增地址',
   handle: async function (req, res) {
     const queryParams = req.body;
-    queryParams.wechatID = req.session.currentUser.wechatID;
+    queryParams.wechatID = req.currentUser.wechatID;
     const ruleResult = commonFunc.checkData(queryParams, {
       wechatID: { title: '登录ID', required: true },
       contactName: { title: '联系人姓名', required: true },
@@ -112,7 +112,7 @@ exports.getAddressList = {
   routeDesc: '收货地址列表',
   handle: async function (req, res) {
     const queryParams = {};
-    queryParams.wechatID = req.session.currentUser.wechatID;
+    queryParams.wechatID = req.currentUser.wechatID;
     const addressList = await accountBusiness.getAddressListLogic(queryParams);
     res.send(new ResJson(addressList));
   },
@@ -144,7 +144,7 @@ exports.deleteAddress = {
   handle: async function (req, res) {
     const queryParams = {
       addressID: req.body.addressID || '',
-      wechatID: req.session.currentUser.wechatID,
+      wechatID: req.currentUser.wechatID,
     };
     await accountBusiness.deleteAddressLogic(queryParams);
     res.send(new ResJson(''));
@@ -195,7 +195,7 @@ exports.updateAddress = {
   handle: async function (req, res) {
 
     const queryParams = req.body;
-    queryParams.wechatID = req.session.currentUser.wechatID;
+    queryParams.wechatID = req.currentUser.wechatID;
     const ruleResult = commonFunc.checkData(queryParams, {
       addressID: { title: '地址ID', required: true },
       wechatID: { title: '登录ID', required: true },
@@ -245,7 +245,7 @@ exports.getAddressData = {
   handle: async function (req, res) {
     const queryParams = {
       addressID: req.query.addressID || '',
-      wechatID: req.session.currentUser.wechatID,
+      wechatID: req.currentUser.wechatID,
     };
     const addressData = await accountBusiness.getAddressDataLogic(queryParams);
     res.send(new ResJson(addressData));

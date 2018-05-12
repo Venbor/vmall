@@ -1,7 +1,6 @@
 const accountDao = require('./account_dao');
 
 // 用户管理
-
 function insertUserWechatLogic(insertData, callback) {
   accountDao.insertUserWechatSql(insertData, callback);
 }
@@ -11,7 +10,6 @@ function getUserWechatDataLogic(queryParams) {
 }
 
 // 地址管理，增删改查
-
 function insertAddressLogic(queryParams) {
   return accountDao.insertAddressSqlData(queryParams);
 }
