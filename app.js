@@ -54,7 +54,7 @@ app.use('/apidoc', express.static(path.resolve(__dirname, './apidoc')));
 app.use('/logs', express.static(path.resolve(__dirname, './logs')));
 
 // api接口路由
-app.use('/api', mountRoute(router));
+app.use('/api', auth.userAuth, mountRoute(router));
 
 // 读取根目录index文件并渲染
 app.get('*', auth.userWechatLogin, (req, res) => { res.render('index'); });

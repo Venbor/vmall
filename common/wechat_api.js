@@ -22,25 +22,6 @@ module.exports = {
     });
     return result;
   },
-  // 验证用户accessToken是否有效
-  checkAccessToken: async function (accessToken, openid) {
-    const checkUrl = 'https://api.weixin.qq.com/sns/auth';
-    const result = await common.requestGET(checkUrl, {
-      openid: openid,
-      access_token: accessToken,
-    });
-    return result;
-  },
-  // 刷新用户accessToken
-  refreshToken: async function (refToken) {
-    const refreshUrl = 'https://api.weixin.qq.com/sns/oauth2/refresh_token';
-    const result = await common.requestGET(refreshUrl, {
-      appid: wechatcfg.appID,
-      refresh_token: refToken,
-      grant_type: 'refresh_token',
-    });
-    return result;
-  },
   // 获取用户信息
   getUserInfo: async function (accessToken, openid) {
     const userInfoUrl = 'https://api.weixin.qq.com/sns/userinfo';

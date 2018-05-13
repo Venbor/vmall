@@ -28,7 +28,7 @@ module.exports = {
   },
   // 生成TOKEN
   signToken: function (obj) {
-    const token = jwt.sign(obj, 'mysecret', { expiresIn: 60 * 60 * 24 * 7 }); // 一周有效期
+    const token = jwt.sign(obj, 'mysecret', { expiresIn: 60 * 60 * 24 * 3 }); // 三天有效期
     return token;
   },
   // 检验TOKEN
