@@ -11,7 +11,7 @@ exports.routeNext = function (req, res, next) {
 // 2.验证登录API
 exports.userAuth = async function (req, res, next) {
   // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3ZWNoYXRJRCI6Mjg3MiwiaWF0IjoxNTI2MTM1MDQ3LCJleHAiOjE1MjY3Mzk4NDd9.r5eGFP8987iN9geqFSWF_aiOATLNFJzEot4cd7y1QOw';
-  const token = req.headers['Authorization'] || req.body.token || req.query.token;
+  const token = req.headers['authorization'] || req.body.token || req.query.token;
   if (!token) {
     res.status(403).send(new ResJson(1, '您还未登录系统，请先登录'));
     return;
@@ -30,7 +30,7 @@ exports.userAuth = async function (req, res, next) {
 // 3.微信登录WEB
 exports.userWechatLogin = async function (req, res, next) {
   // 已经登录
-  const token = req.cookies['Authorization'] || req.headers['Authorization'];
+  const token = req.cookies['token'] || req.headers['authorization'];
   const decoded = token && await common.verifyToken(token).catch((err) => {});
   if (decoded) {
     req.currentUser = decoded;
@@ -69,7 +69,7 @@ exports.userWechatLogin = async function (req, res, next) {
     await accountBusiness.insertUserWechatLogic(queryParams);
     const userDataResult = await accountBusiness.getUserWechatDataLogic({ openID: queryParams.openID });
     // 成功后登录
-    res.cookie("Authorization", common.signToken({ openID: userDataResult.openid, wechatID: userDataResult.wechatID }), { maxAge: 3600000 * 24 * 3 });
+    res.cookie("token", common.signToken({ openID: userDataResult.openid, wechatID: userDataResult.wechatID }), { maxAge: 3600000 * 24 * 3 });
     req.currentUser = { openID: userDataResult.openid, wechatID: userDataResult.wechatID };
     next();
   } catch (err) {
