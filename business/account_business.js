@@ -1,11 +1,12 @@
 const accountDao = require('./account_dao');
 
-// 用户管理
-function insertUserWechatLogic(insertData, callback) {
+// 插入/更新用户信息
+async function insertUserWechatLogic(insertData, callback) {
   accountDao.insertUserWechatSql(insertData, callback);
 }
 
-function getUserWechatDataLogic(queryParams) {
+// 获取用户信息
+async function getUserWechatDataLogic(queryParams) {
   return accountDao.getUserWechatSqlData(queryParams);
 }
 
@@ -30,6 +31,16 @@ function getAddressListLogic(queryParams) {
   return accountDao.getAddressListSqlData(queryParams);
 }
 
+// 更新默认地址
+function updateAddressDefaultLogic(queryParams) {
+  return accountDao.updateAddressDefaultSqlData(queryParams);
+}
+
+// 获取默认地址
+function getDefaultAddressDataLogic(queryParams) {
+  return accountDao.getDefaultAddressDataSqlData(queryParams);
+}
+
 
 module.exports = {
   insertUserWechatLogic,
@@ -39,4 +50,6 @@ module.exports = {
   deleteAddressLogic,
   updateAddressLogic,
   getAddressDataLogic,
+  updateAddressDefaultLogic,
+  getDefaultAddressDataLogic,
 };

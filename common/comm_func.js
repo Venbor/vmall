@@ -86,7 +86,7 @@ module.exports = {
     let rulePropertyList = propertys.filter(f => (models[f].rule || []).length > 0); // 含有规则的验证属性数组
     rulePropertyList = rulePropertyList.filter(t => !requirePropertyList.includes(t)); // 过滤掉报不能为空的项
     rulePropertyList.forEach((f) => {
-      const ruleList = models[f].rule.filter(t => !validator[t.name](requestData[f], t.opt)); // 某一属相不满足的规则数组
+      const ruleList = models[f].rule.filter(t => !validator[t.name](`${requestData[f]}`, t.opt)); // 某一属相不满足的规则数组
       // 存在错误时
       if (ruleList.length > 0) {
         const msgList = ruleList.map(t => t.msg).join(',且');

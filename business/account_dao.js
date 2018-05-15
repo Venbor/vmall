@@ -9,9 +9,9 @@ function insertUserWechatSql(insertData, callback) {
   mysqlDB.execute(sql, insertData, callback);
 }
 
-// 获取微信登录信息
+// 获取用户信息
 function getUserWechatSqlData(queryParams) {
-  const sql = `select wechatID,openID,headImgUrl,nickname,kuaiCoin,withdrawCoin
+  const sql = `select wechatID,openID,headImgUrl,nickname,mobile,balance,integral,earnings,totalEarnings
   from member_wechats
   where openID=:openID`;
   return mysqlDB.queryObject(sql, queryParams);
@@ -47,10 +47,28 @@ function getAddressDataSqlData(queryParams) {
 }
 
 function getAddressListSqlData(queryParams) {
-  const sql = `select addressID,contactName,contactMobile,address,province,provinceName,city,cityName,district,districtName
+  const sql = `select addressID,isDefault,contactName,contactMobile,address,province,provinceName,city,cityName,district,districtName
   from member_address
   where wechatID=:wechatID`;
   return mysqlDB.queryList(sql, queryParams);
+}
+
+// 更新默认地址
+function updateAddressDefaultSqlData(queryParams) {
+  const sqlTasks = [];
+  const updateNoDefaultSql = 'update member_address set isDefault=0 where wechatID=:wechatID';
+  const updateSetDefaultSql = 'update member_address set isDefault=1 where wechatID=:wechatID and addressID=:addressID';
+  sqlTasks.push({ field: 'noDefault', sql: updateNoDefaultSql, paras: queryParams });
+  sqlTasks.push({ field: 'setDefault', sql: updateSetDefaultSql, paras: queryParams });
+  return mysqlDB.executeTransaction(sqlTasks);
+}
+
+// 获取默认地址
+function getDefaultAddressDataSqlData(queryParams) {
+  const sql = `select addressID,contactName,contactMobile,address,province,provinceName,city,cityName,district,districtName
+  from member_address
+  where wechatID=:wechatID and isDefault=1`;
+  return mysqlDB.queryObject(sql, queryParams);
 }
 
 module.exports = {
@@ -61,4 +79,6 @@ module.exports = {
   deleteAddressSqlData,
   updateAddressSqlData,
   getAddressDataSqlData,
+  updateAddressDefaultSqlData,
+  getDefaultAddressDataSqlData,
 };

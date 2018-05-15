@@ -26,10 +26,10 @@ function getConnection() {
 }
 
 // 快速转换promise对象
-function queryPromisify(fn, conn) {
+function queryPromisify(fn, conn, reserve) {
   return (...args) => new Promise((resolve, reject) => {
     fn.apply(conn, [...args, (err, res) => {
-      if (conn) { conn.release(); }
+      if (!reserve) { conn.release(); }
       if (err) {
         reject(err);
         return;
@@ -72,16 +72,17 @@ exports.queryListForPagination = queryListForPagination;
 const executeTransaction = async function (sqlTasks) {
   try {
     const conn = await getConnection();
-    await queryPromisify(conn.beginTransaction, '')();
+    await queryPromisify(conn.beginTransaction, conn, true)();
     const taskResult = {};
     for (const [key, sqlTask] of sqlTasks.entries()) {
-      let result = await queryPromisify(conn.query(sqlTask.sql, sqlTask.paras));
+      let result = await queryPromisify(conn.query, conn, true)(sqlTask.sql, sqlTask.paras);
       result = (result && result.length > 0) ? result[0] : undefined;
       taskResult[sqlTask.field ? sqlTask.field : key] = result;
     }
     await queryPromisify(conn.commit, conn)();
     return taskResult;
   } catch (err) {
+    console.log(err);
     try {
       conn.rollback();
     } catch (error) {

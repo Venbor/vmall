@@ -57,7 +57,8 @@ app.use('/logs', express.static(path.resolve(__dirname, './logs')));
 app.use('/api', auth.userAuth, mountRoute(router));
 
 // 读取根目录index文件并渲染
-app.get('*', auth.userWechatLogin, (req, res) => { res.render('index'); });
+// app.get('*', auth.userWechatLogin, (req, res) => { res.render('index'); });
+app.get('*', (req, res) => { res.render('index'); });
 
 // 全局错误处理
 app.use((err, req, res, next) => {
