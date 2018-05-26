@@ -1,5 +1,22 @@
 const goodsDao = require('./goods_dao');
 const cartBusiness = require('./cart_business');
+const webConfige = require('../config/config_web.js');
+
+async function getGoodsCategoryLogic(queryParams) {
+  const result = await goodsDao.getGoodsCategorySqlData(queryParams);
+  result.forEach((t) => {
+    t.banner = t.banner ? `${webConfige.qiniu.qiniuDomain}${t.banner}` : '';
+  });
+  return result;
+}
+
+async function getGoodsItemListLogic(queryParams) {
+  const result = await goodsDao.getGoodsItemListSqlData(queryParams);
+  result.forEach((t) => {
+    t.icon = t.icon ? `${webConfige.qiniu.qiniuDomain}${t.icon}` : '';
+  });
+  return result;
+}
 
 async function getGoodsListLogic(queryParams) {
   const goodsList = await goodsDao.getGoodsListSqlData(queryParams);
@@ -26,6 +43,8 @@ function getGoodsClassListLogic(queryParams) {
 
 
 module.exports = {
+  getGoodsCategoryLogic,
+  getGoodsItemListLogic,
   getGoodsListLogic,
   getGoodsDetailLogic,
   getGoodsClassListLogic,

@@ -2,6 +2,62 @@ const validator = require('../common/validator_extend');
 const ResJson = require('../config/ResJson');
 const goodsBusiness = require('../business/goods_business');
 
+/**
+ * @api {GET} /api/getgoodscategorylist 获取商品类别
+ * @apiName getgoodscategorylist
+ * @apiGroup Goods
+ * @apiDescription 商品类别
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
+exports.getGoodsCategoryList = {
+  method: 'GET',
+  middlewares: [],
+  routeDesc: '获取商品类别',
+  handle: async function (req, res) {
+    const result = await goodsBusiness.getGoodsCategoryLogic();
+    res.send(new ResJson(result));
+  },
+};
+
+/**
+ * @api {GET} /api/getgoodsitemlist 获取商品类别栏目
+ * @apiName getgoodsitemlist
+ * @apiGroup Goods
+ * @apiDescription 商品类别栏目
+ *
+ * @apiParam  {Number} cateID 商品类别ID
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
+exports.getGoodsItemList = {
+  method: 'GET',
+  middlewares: [],
+  routeDesc: '获取商品类别',
+  handle: async function (req, res) {
+    const queryParams = req.query;
+    queryParams.cateID = queryParams.cateID || 1;
+    const result = await goodsBusiness.getGoodsItemListLogic(queryParams);
+    res.send(new ResJson(result));
+  },
+};
+
 
 /**
  * @api {GET} /api/getgoodslist 获取商品列表
@@ -64,28 +120,4 @@ exports.getGoodsDetail = {
     res.send(new ResJson(detailData));
   },
 };
-/**
- * @api {GET} /api/getgoodsclasslist 获取商品类别
- * @apiName getgoodsclasslist
- * @apiGroup Goods
- * @apiDescription 商品
- *
- * @apiParamExample  {Object} 请求示例:
-    {
-    }
- *
- * @apiSuccessExample {Object} 响应示例:
-    {
-      errcode: 0,
-      errmsg: "操作成功"
-    }
- */
-exports.getGoodsClassList = {
-  method: 'GET',
-  middlewares: [],
-  routeDesc: '获取商品类别',
-  handle: async function (req, res) {
-    const goodsClassResult = await goodsBusiness.getGoodsClassListLogic();
-    res.send(new ResJson(goodsClassResult));
-  },
-};
+
