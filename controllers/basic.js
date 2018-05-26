@@ -69,3 +69,29 @@ exports.getAreaList = {
     res.send(new ResJson(areaList));
   },
 };
+
+/**
+ * @api {GET} /api/getaddata 获取首页广告
+ * @apiGroup Basic
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功",
+      resobj: {}
+    }
+ */
+exports.getAdData = {
+  method: 'GET',
+  middlewares: [],
+  routeDesc: '获取首页广告',
+  handle: async function (req, res) {
+    const adData = await basicBusiness.getAdDataLogic();
+    res.send(new ResJson(adData));
+  },
+};
+

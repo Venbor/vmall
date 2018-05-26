@@ -8,7 +8,15 @@ function getAreaListSqlData(queryParams) {
   return mysqlDB.queryList(sql, queryParams);
 }
 
+function getAdDataSqlData(queryParams) {
+  const sql = `select id,adTitle,adImage
+  from sys_ad
+  where adType=:adType and status=1`;
+  return mysqlDB.queryList(sql, queryParams);
+}
+
 
 module.exports = {
   getAreaListSqlData,
+  getAdDataSqlData,
 };
