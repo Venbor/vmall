@@ -13,6 +13,11 @@ const ResJson = require('./config/ResJson');
 const app = express();
 const router = express.Router();
 
+// scoket连接
+const scoketClient = require('./config/webScoket.js');
+scoketClient(require('socket.io')(app));
+
+
 // 设置模板引擎为html
 app.set('views', path.resolve(__dirname, ''));
 app.set('view engine', 'html');

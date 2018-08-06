@@ -62,6 +62,13 @@ exports.getGoodsItemList = {
 /**
  * @api {GET} /api/getgoodslist 获取商品列表
  * @apiGroup Goods
+ *
+ * @apiParam  {String} key 前端传入标识码
+ * @apiParam  {String} searchKey 模糊搜索关键字
+ * @apiParam  {Number} itemType 商品栏目ID 可选值
+ * @apiParam  {Number} pageSize=20 行数 可选值
+ * @apiParam  {Number} currentPage=0 页码 可选值
+ *
  * @apiParamExample  {Object} 请求示例:
     {
     }
@@ -77,15 +84,13 @@ exports.getGoodsList = {
   middlewares: [],
   routeDesc: '获取商品列表',
   handle: async function (req, res) {
-    // const operateUser = req.session.currentUser.userName || '';
-    const operateUser = '15176745000';
-    const queryParams = req.query;
-    queryParams.searchKey = queryParams.searchKey || '';
-    queryParams.goodsClass = validator.isIntFormat(queryParams.goodsClass, { min: 1 }) ? Number.parseInt(queryParams.goodsClass, 10) : -1;
-    queryParams.pageSize = validator.isIntFormat(queryParams.pageSize, { min: 1 }) ? Number.parseInt(queryParams.pageSize, 10) : 20;
-    queryParams.currentPage = validator.isIntFormat(queryParams.currentPage, { min: 1 }) ? Number.parseInt(queryParams.currentPage, 10) : 0;
+    const queryParams = {
+      searchKey: req.query.searchKey || '',
+      pageSize: validator.isIntFormat(req.query.pageSize, { min: 1 }) ? Number.parseInt(req.query.pageSize, 10) : 20,
+      currentPage: validator.isIntFormat(req.query.currentPage, { min: 1 }) ? Number.parseInt(req.query.currentPage, 10) : 0,
+    };
     queryParams.offset = queryParams.currentPage ? (queryParams.currentPage - 1) * queryParams.pageSize : 0;
-    Object.assign(queryParams, { operateUser });
+    Object.assign(queryParams, req.currentUser || {});
     const goodsResult = await goodsBusiness.getGoodsListLogic(queryParams);
     res.send(new ResJson(goodsResult));
   },

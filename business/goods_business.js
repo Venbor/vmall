@@ -1,7 +1,7 @@
 const goodsDao = require('./goods_dao');
-const cartBusiness = require('./cart_business');
 const webConfige = require('../config/config_web.js');
 
+// 商品分类
 async function getGoodsCategoryLogic(queryParams) {
   const result = await goodsDao.getGoodsCategorySqlData(queryParams);
   result.forEach((t) => {
@@ -10,6 +10,7 @@ async function getGoodsCategoryLogic(queryParams) {
   return result;
 }
 
+// 商品栏目
 async function getGoodsItemListLogic(queryParams) {
   const result = await goodsDao.getGoodsItemListSqlData(queryParams);
   result.forEach((t) => {
@@ -18,34 +19,23 @@ async function getGoodsItemListLogic(queryParams) {
   return result;
 }
 
+// 商品列表
 async function getGoodsListLogic(queryParams) {
-  const goodsList = await goodsDao.getGoodsListSqlData(queryParams);
-  const cartGoodsList = await cartBusiness.getCartGoodsListLogic(queryParams);
-  goodsList.rows.forEach((g) => {
-    const cartGoods = cartGoodsList.find(c => c.goodsID === g.goodsID && c.goodsClassID === g.goodsClassID);
-    g.bookingNum = cartGoods ? cartGoods.bookingNum : 0;
+  const result = await goodsDao.getGoodsListSqlData(queryParams);
+  result.rows.forEach((t) => {
+    t.goodsImage = t.goodsImage ? `${webConfige.qiniu.qiniuDomain}${t.goodsImage}` : '';
   });
-  if (queryParams.key) {
-    Object.assign(goodsList, { key: queryParams.key });
-  }
-
-  return goodsList;
+  return result;
 }
 
-
+// 商品详情
 function getGoodsDetailLogic(queryParams) {
   return goodsDao.getGoodsDetailSqlData(queryParams);
 }
-
-function getGoodsClassListLogic(queryParams) {
-  return goodsDao.getGoodsClassListSqlData(queryParams);
-}
-
 
 module.exports = {
   getGoodsCategoryLogic,
   getGoodsItemListLogic,
   getGoodsListLogic,
   getGoodsDetailLogic,
-  getGoodsClassListLogic,
 };
