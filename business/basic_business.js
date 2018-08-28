@@ -6,13 +6,13 @@ function getAreaListLogic(queryParams) {
 }
 
 async function getAdDataLogic() {
-  const result1 = await basicDao.getAdDataSqlData({ adType: 1 });
-  const result2 = await basicDao.getAdDataSqlData({ adType: 2 });
+  const result1 = await basicDao.getAdDataSqlData({ type: 1 });
+  const result2 = await basicDao.getAdDataSqlData({ type: 2 });
   result1.forEach((t) => {
-    t.adImage = `${webConfige.qiniu.qiniuDomain}${t.adImage}`;
+    t.imageUrl = `${webConfige.qiniu.qiniuDomain}${t.imageUrl}`;
   });
   result2.forEach((t) => {
-    t.adImage = `${webConfige.qiniu.qiniuDomain}${t.adImage}`;
+    t.imageUrl = `${webConfige.qiniu.qiniuDomain}${t.imageUrl}`;
   });
   const result = {
     bannerList: result1,

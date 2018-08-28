@@ -39,7 +39,7 @@ function mountRoute(router) {
       model.routeDesc = item.routeDesc || '';
       model.handle = item.handle || function () {};
       console.warn(`路由挂载成功：${model.url}`);
-      router[model.method](model.url, compose(model.middlewares, model.url), common.handlerError(model.handle));
+      router[model.method](model.url, compose(model.middlewares, model.url), common.handlerError(model.handle, model.routeDesc));
     }
   });
   return router;

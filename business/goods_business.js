@@ -1,20 +1,20 @@
 const goodsDao = require('./goods_dao');
 const webConfige = require('../config/config_web.js');
 
-// 商品分类
-async function getGoodsCategoryLogic(queryParams) {
-  const result = await goodsDao.getGoodsCategorySqlData(queryParams);
+// 商品一级分类
+async function getGoodsKindsListLogic() {
+  const result = await goodsDao.getGoodsKindsListSqlData();
   result.forEach((t) => {
-    t.banner = t.banner ? `${webConfige.qiniu.qiniuDomain}${t.banner}` : '';
+    t.imageUrl = t.imageUrl ? `${webConfige.qiniu.qiniuDomain}${t.imageUrl}` : '';
   });
   return result;
 }
 
-// 商品栏目
-async function getGoodsItemListLogic(queryParams) {
-  const result = await goodsDao.getGoodsItemListSqlData(queryParams);
+// 商品二级分类
+async function getGoodsCategoryLogic(queryParams) {
+  const result = await goodsDao.getGoodsCategorySqlData(queryParams);
   result.forEach((t) => {
-    t.icon = t.icon ? `${webConfige.qiniu.qiniuDomain}${t.icon}` : '';
+    t.imageUrl = t.imageUrl ? `${webConfige.qiniu.qiniuDomain}${t.imageUrl}` : '';
   });
   return result;
 }
@@ -23,19 +23,23 @@ async function getGoodsItemListLogic(queryParams) {
 async function getGoodsListLogic(queryParams) {
   const result = await goodsDao.getGoodsListSqlData(queryParams);
   result.rows.forEach((t) => {
-    t.goodsImage = t.goodsImage ? `${webConfige.qiniu.qiniuDomain}${t.goodsImage}` : '';
+    t.goodsIconUrl = t.goodsIconUrl ? `${webConfige.qiniu.qiniuDomain}${t.goodsIconUrl}` : '';
   });
   return result;
 }
 
 // 商品详情
-function getGoodsDetailLogic(queryParams) {
-  return goodsDao.getGoodsDetailSqlData(queryParams);
+async function getGoodsDetailLogic(queryParams) {
+  const result = await goodsDao.getGoodsDetailSqlData(queryParams);
+  if(result){
+    result.goodsPicUrls = result.goodsPicUrls ? JSON.parse(result.goodsPicUrls).map(t => `${webConfige.qiniu.qiniuDomain}${t}`) : [];
+  }
+  return result;
 }
 
 module.exports = {
+  getGoodsKindsListLogic,
   getGoodsCategoryLogic,
-  getGoodsItemListLogic,
   getGoodsListLogic,
   getGoodsDetailLogic,
 };

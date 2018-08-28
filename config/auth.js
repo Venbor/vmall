@@ -10,7 +10,7 @@ exports.routeNext = function (req, res, next) {
 
 // 2.验证登录API
 exports.userAuth = async function (req, res, next) {
-  const token = common.signToken({ openID: 'oE3bvwhTrCEJPkIjU947A8lNiZbo', wechatID: 2872 });
+  const token = common.signToken({ openID: 'oE3bvwhTrCEJPkIjU947A8lNiZbo', userID: 2872 });
   // const token = req.headers['authorization'] || req.body.token || req.query.token;
   if (!token) {
     res.status(403).send(new ResJson(1, '您还未登录系统，请先登录'));
@@ -69,8 +69,8 @@ exports.userWechatLogin = async function (req, res, next) {
     await accountBusiness.insertUserWechatLogic(queryParams);
     const userDataResult = await accountBusiness.getUserWechatDataLogic({ openID: queryParams.openID });
     // 成功后登录
-    res.cookie("token", common.signToken({ openID: userDataResult.openid, wechatID: userDataResult.wechatID }), { maxAge: 3600000 * 24 * 3 });
-    req.currentUser = { openID: userDataResult.openid, wechatID: userDataResult.wechatID };
+    res.cookie("token", common.signToken({ openID: userDataResult.openid, userID: userDataResult.userID }), { maxAge: 3600000 * 24 * 3 });
+    req.currentUser = { openID: userDataResult.openid, userID: userDataResult.userID };
     next();
   } catch (err) {
     next(err);

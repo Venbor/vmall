@@ -65,12 +65,12 @@ exports.getUserWechatData = {
 exports.insertAddress = {
   method: 'POST',
   middlewares: [],
-  routeDesc: '新增地址',
+  routeDesc: '新增收货地址',
   handle: async function (req, res) {
     let queryParams = req.body;
-    queryParams.wechatID = req.currentUser.wechatID;
+    queryParams.userID = req.currentUser.userID;
     const ruleResult = commonFunc.checkData(queryParams, {
-      wechatID: { title: '登录ID', required: true },
+      userID: { title: '用户ID', required: true },
       contactName: { title: '姓名', required: true, rule: [{ name: 'isLength', opt: { max: 6 }, msg: '不能大于8个字符' }] },
       contactMobile: { title: '电话号码', required: true, rule: [{ name: 'isMobilePhone', opt: 'zh-CN', msg: '格式不正确' }] },
       address: { title: '详细地址', required: true, rule: [{ name: 'isLength', opt: { max: 30 }, msg: '不能大于30个字符' }] },
@@ -117,7 +117,7 @@ exports.getAddressList = {
   routeDesc: '收货地址列表',
   handle: async function (req, res) {
     const queryParams = {};
-    queryParams.wechatID = req.currentUser.wechatID;
+    queryParams.userID = req.currentUser.userID;
     const addressList = await accountBusiness.getAddressListLogic(queryParams);
     res.send(new ResJson(addressList));
   },
@@ -149,7 +149,7 @@ exports.deleteAddress = {
   handle: async function (req, res) {
     const queryParams = {
       addressID: req.body.addressID || '',
-      wechatID: req.currentUser.wechatID,
+      userID: req.currentUser.userID,
     };
     await accountBusiness.deleteAddressLogic(queryParams);
     res.send(new ResJson(''));
@@ -199,7 +199,7 @@ exports.updateAddress = {
   routeDesc: '更新地址信息',
   handle: async function (req, res) {
     const queryParams = req.body;
-    queryParams.wechatID = req.currentUser.wechatID;
+    queryParams.userID = req.currentUser.userID;
     const ruleResult = commonFunc.checkData(queryParams, {
       addressID: { title: '地址ID', required: true },
       wechatID: { title: '登录ID', required: true },
@@ -249,7 +249,7 @@ exports.getAddressData = {
   handle: async function (req, res) {
     const queryParams = {
       addressID: req.query.addressID || '',
-      wechatID: req.currentUser.wechatID,
+      userID: req.currentUser.userID,
     };
     const addressData = await accountBusiness.getAddressDataLogic(queryParams);
     res.send(new ResJson(addressData));
@@ -283,7 +283,7 @@ exports.updateAddressDefault = {
   handle: async function (req, res) {
     const queryParams = {
       addressID: req.body.addressID || '',
-      wechatID: req.currentUser.wechatID,
+      userID: req.currentUser.userID,
     };
     await accountBusiness.updateAddressDefaultLogic(queryParams);
     res.send(new ResJson(''));
@@ -313,7 +313,7 @@ exports.getDefaultAddressData = {
   routeDesc: '获取默认收货地址',
   handle: async function (req, res) {
     const queryParams = {
-      wechatID: req.currentUser.wechatID,
+      userID: req.currentUser.userID,
     };
     await accountBusiness.getDefaultAddressDataLogic(queryParams);
     res.send(new ResJson(''));

@@ -8,7 +8,7 @@ module.exports = {
     host: 'localhost',
     user: 'root',
     password: '123456',
-    database: 'venbor_db',
+    database: 'ml_db',
     port: 3306,
     // 远程
     // host: '103.213.250.157',
@@ -30,7 +30,7 @@ module.exports = {
       appdebug: {
         category: 'linwb', // 日志分类
         type: 'file', // 输出日志方式
-        filename: 'logs/debug.log',
+        filename: 'debug.html',
       },
     }
   },

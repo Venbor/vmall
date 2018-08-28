@@ -17,12 +17,14 @@ module.exports = {
     });
   },
   // 错误处理函数
-  handlerError: function (middleware) {
+  handlerError: function (handle, routeDesc) {
     return async(req, res, next) => {
       try {
-        await middleware(req, res, next);
+        await handle(req, res, next);
       } catch (err) {
-        next(err);
+        // 此处可将错误日志记录到数据库
+        next(`${routeDesc}错误:${err}`);
+        // next(err);
       }
     };
   },

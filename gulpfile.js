@@ -66,7 +66,7 @@ gulp.task('upload', (cb) => {
 gulp.task('shell', (cb) => {
   gulpSSH
     .shell(['cd /root', 'sh linwb.sh'], { filePath: 'shell.log' })
-    .pipe(gulp.dest('logs'))
+    .pipe(gulp.dest('./'))
     .on('end', cb);
 });
 
@@ -74,7 +74,7 @@ gulp.task('shell', (cb) => {
 gulp.task('nginx', (cb) => {
   gulpSSH
     .shell(['cd /usr/local/nginx/sbin', './nginx -s stop', './nginx'], { filePath: 'shell.log' })
-    .pipe(gulp.dest('logs'))
+    .pipe(gulp.dest('./'))
     .on('end', cb);
 });
 

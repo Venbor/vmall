@@ -14,8 +14,8 @@ const app = express();
 const router = express.Router();
 
 // scoket连接
-const scoketClient = require('./config/webScoket.js');
-scoketClient(require('socket.io')(app));
+// const scoketClient = require('./config/webScoket.js');
+// scoketClient(require('socket.io')(app));
 
 
 // 设置模板引擎为html
@@ -49,15 +49,14 @@ app.use(compression());
 // 日志管理
 log4js.configure(config.loggerConfig);
 global.logger = log4js.getLogger();
-global.logger.debug('debug', 'DEBUG开启');
+// global.logger.debug('DEBUG<div>debug开启</div>');
 
 // 静态化vue打包文件
 app.use('/static', express.static(path.resolve(__dirname, './static')));
 // 静态化API接口文件
 app.use('/apidoc', express.static(path.resolve(__dirname, './apidoc')));
-// 静态化logs日志文件
-app.use('/logs', express.static(path.resolve(__dirname, './logs')));
-
+// 读取日志文件
+app.get('/logs', (req, res) => { res.render('logs'); });
 // api接口路由
 app.use('/api', auth.userAuth, mountRoute(router));
 
@@ -65,11 +64,11 @@ app.use('/api', auth.userAuth, mountRoute(router));
 // app.get('*', auth.userWechatLogin, (req, res) => { res.render('index'); });
 app.get('*', (req, res) => { res.render('index'); });
 
-// 全局错误处理
+// 接口错误处理
 app.use((err, req, res, next) => {
-  global.logger.debug(err);
   res.status(500);
-  res.send(new ResJson(1, `系统错误,我们会尽快修复: ${err}`));
+  res.send(new ResJson(1, err));
+  // res.send(new ResJson(1, '系统错误,我们会尽快修复'));
   next();
 });
 
