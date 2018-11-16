@@ -21,7 +21,7 @@ function getGoodsCategorySqlData(queryParams) {
 
 // 商品列表
 function getGoodsListSqlData(queryParams) {
-  const sql = `select ifnull(gs.goodsIconUrl,'') goodsIconUrl,goodsID,goodsName,guidePrice,salePrice,unit
+  const sql = `select ifnull(gs.goodsPicUrl,'') goodsPicUrl,goodsID,goodsName,guidePrice,salePrice,unit
   from ml_goods gs
   where gs.status=1 and(:searchKey='' or gs.goodsName like concat('%',:searchKey,'%'))
   order by sort`;
@@ -30,11 +30,26 @@ function getGoodsListSqlData(queryParams) {
 
 // 商品详情
 function getGoodsDetailSqlData(queryParams) {
-  const sql = `select ifnull(gs.goodsDesc,'') goodsDesc,ifnull(gs.goodsSpec,'') goodsSpec,ifnull(gs.goodsPicUrls,'') goodsPicUrls,
+  const sql = `select ifnull(gs.goodsDesc,'') goodsDesc,ifnull(gs.goodsSpec,'') goodsSpec,ifnull(gs.bannerUrls,'') bannerUrls,
   goodsID,goodsName,salesCount,guidePrice,salePrice,unit,stock
   from ml_goods gs
   where gs.goodsID=:goodsID`;
   return mysqlDB.queryObject(sql, queryParams);
+}
+// 商品详情
+function getGoodsCommentsSqlData(queryParams) {
+  const sql = `select fullName,content,type,createtime
+  from ml_goods_comments cms
+  where gs.goodsID=:goodsID`;
+  return mysqlDB.queryList(sql, queryParams);
+}
+
+// 商品规格
+function getGoodsAttributesSqlData(queryParams) {
+  const sql = `select fullName,content,type,createtime
+  from ml_goods_attribute gtr
+  where gs.goodsID=:goodsID`;
+  return mysqlDB.queryList(sql, queryParams);
 }
 
 module.exports = {
@@ -42,4 +57,6 @@ module.exports = {
   getGoodsKindsListSqlData,
   getGoodsListSqlData,
   getGoodsDetailSqlData,
+  getGoodsCommentsSqlData,
+  getGoodsAttributesSqlData,
 };

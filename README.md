@@ -30,6 +30,9 @@ npm install -g eslint-plugin-react
 npm install express body-parser express-session ejs-mate compression --save
 npm install validator utility redis --save
 
+npm install moment axios vuex vue-router lrz validator better-scroll --save
+npm install del gulp gulp-bump gulp-ssh gulp-zip gulp-sftp gulp-replace gulp-sequence --save-dev
+npm install node-sass sass-loader --save-dev
 
 npm install -g pm2
 ```

@@ -23,7 +23,7 @@ async function getGoodsCategoryLogic(queryParams) {
 async function getGoodsListLogic(queryParams) {
   const result = await goodsDao.getGoodsListSqlData(queryParams);
   result.rows.forEach((t) => {
-    t.goodsIconUrl = t.goodsIconUrl ? `${webConfige.qiniu.qiniuDomain}${t.goodsIconUrl}` : '';
+    t.goodsPicUrl = t.goodsPicUrl ? `${webConfige.qiniu.qiniuDomain}${t.goodsPicUrl}` : '';
   });
   return result;
 }
@@ -32,8 +32,20 @@ async function getGoodsListLogic(queryParams) {
 async function getGoodsDetailLogic(queryParams) {
   const result = await goodsDao.getGoodsDetailSqlData(queryParams);
   if(result){
-    result.goodsPicUrls = result.goodsPicUrls ? JSON.parse(result.goodsPicUrls).map(t => `${webConfige.qiniu.qiniuDomain}${t}`) : [];
+    result.bannerUrls = result.bannerUrls ? JSON.parse(result.bannerUrls).map(t => `${webConfige.qiniu.qiniuDomain}${t}`) : [];
   }
+  return result;
+}
+
+// 商品评价
+async function getGoodsCommentsLogic(queryParams) {
+  const result = await goodsDao.getGoodsCommentsSqlData(queryParams);
+  return result;
+}
+
+// 商品规格
+async function getGoodsAttributesLogic(queryParams) {
+  const result = await goodsDao.getGoodsAttributesSqlData(queryParams);
   return result;
 }
 
@@ -42,4 +54,6 @@ module.exports = {
   getGoodsCategoryLogic,
   getGoodsListLogic,
   getGoodsDetailLogic,
+  getGoodsCommentsLogic,
+  getGoodsAttributesLogic,
 };

@@ -126,3 +126,69 @@ exports.getGoodsDetail = {
   },
 };
 
+/**
+ * @api {GET} /api/getgoodscomments 获取商品评价
+ * @apiName getgoodscomments
+ * @apiGroup Goods
+ * @apiDescription 商品评价
+ *
+ * @apiParam  {String} goodsID 商品ID
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
+exports.getGoodsComments = {
+  method: 'GET',
+  middlewares: [],
+  routeDesc: '获取商品评价',
+  handle: async function (req, res) {
+    const queryParams = req.query;
+    if (!validator.isIntFormat(queryParams.goodsID, { min: 1 })) {
+      res.send(new ResJson(1, '请求参数有误'));
+      return;
+    }
+    const comments = await goodsBusiness.getGoodsCommentsLogic(queryParams);
+    res.send(new ResJson(comments || []));
+  },
+};
+
+/**
+ * @api {GET} /api/getgoodsattributes 获取商品规格
+ * @apiName getgoodsattributes
+ * @apiGroup Goods
+ * @apiDescription 商品规格
+ *
+ * @apiParam  {String} goodsID 商品ID
+ *
+ * @apiParamExample  {Object} 请求示例:
+    {
+    }
+ *
+ * @apiSuccessExample {Object} 响应示例:
+    {
+      errcode: 0,
+      errmsg: "操作成功"
+    }
+ */
+exports.getGoodsAttributes = {
+  method: 'GET',
+  middlewares: [],
+  routeDesc: '获取商品规格',
+  handle: async function (req, res) {
+    const queryParams = req.query;
+    if (!validator.isIntFormat(queryParams.goodsID, { min: 1 })) {
+      res.send(new ResJson(1, '请求参数有误'));
+      return;
+    }
+    const attributes = await goodsBusiness.getGoodsAttributesLogic(queryParams);
+    res.send(new ResJson(attributes || []));
+  },
+};
+

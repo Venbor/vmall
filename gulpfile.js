@@ -37,7 +37,7 @@ gulp.task('change', (cb) => {
 // 压缩文件
 gulp.task('zip', (cb) => {
   gulp.src(['**', '!node_modules/**', '!node_modules/', '!static/**', '!static/', '!index.html'])
-    .pipe(zip(`LINWB${moment().format('YYYY-MM-DD')}.zip`))
+    .pipe(zip(`VMALL${moment().format('YYYY-MM-DD')}.zip`))
     .pipe(gulp.dest('dist'))
     .on('end', cb);
 });
@@ -65,7 +65,7 @@ gulp.task('upload', (cb) => {
 // 执行服务器命令
 gulp.task('shell', (cb) => {
   gulpSSH
-    .shell(['cd /root', 'sh linwb.sh'], { filePath: 'shell.log' })
+    .shell(['cd /root', 'sh vmall.sh'], { filePath: 'shell.log' })
     .pipe(gulp.dest('./'))
     .on('end', cb);
 });
