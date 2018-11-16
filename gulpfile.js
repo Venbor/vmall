@@ -37,7 +37,7 @@ gulp.task('change', (cb) => {
 // 压缩文件
 gulp.task('zip', (cb) => {
   gulp.src(['**', '!node_modules/**', '!node_modules/', '!static/**', '!static/', '!index.html'])
-    .pipe(zip(`VMALL${moment().format('YYYY-MM-DD')}.zip`))
+    .pipe(zip(`VMALLNODE${moment().format('YYYY-MM-DD')}.zip`))
     .pipe(gulp.dest('dist'))
     .on('end', cb);
 });
@@ -65,7 +65,7 @@ gulp.task('upload', (cb) => {
 // 执行服务器命令
 gulp.task('shell', (cb) => {
   gulpSSH
-    .shell(['cd /root', 'sh vmall.sh'], { filePath: 'shell.log' })
+    .shell(['cd /root', 'sh vmall-node.sh'], { filePath: 'shell.log' })
     .pipe(gulp.dest('./'))
     .on('end', cb);
 });
@@ -85,4 +85,4 @@ gulp.task('clear', (cb) => {
   cb();
 });
 
-gulp.task('default', cb => gulpSequence('change', 'zip', 'rechange', 'upload', 'clear', 'shell', cb));
+gulp.task('default', cb => gulpSequence('change', 'zip', 'rechange', 'upload', 'clear', 'shell', 'nginx', cb));
