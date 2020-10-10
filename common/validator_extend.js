@@ -119,7 +119,7 @@ validator.numberCalcFormat = function (str, digit) {
   if (!validator.isFloatFormat(str) || !validator.isIntFormat(digit, { min: 1 })) {
     return str;
   }
-  return Math.round(Number.parseFloat(`${str}`) * (10 * digit)) / (10 * digit);
+  return Math.round(Number.parseFloat(`${str}`) * (10 ** digit)) / (10 ** digit);
 };
 
 module.exports = validator;
